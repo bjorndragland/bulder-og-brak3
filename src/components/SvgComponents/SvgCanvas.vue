@@ -71,7 +71,7 @@ import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
 import SvgHoldMarker from './SvgHoldMarker.vue'
 import type HoldMarkerFB from '../../types/HoldMarkerFB'
 
-import type HoldTypeTerm from '../../types/HoldTypeTerm'
+import type { HoldTypeTerm } from '../../types/HoldTypeTerm.js'
 const wallImage = myImage;
 const svgMarkerStore = useSvgMarkerStore()
 

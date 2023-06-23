@@ -22,7 +22,7 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     wallWidth: 3.1,
     markerScale: 4,
     zoomFactor: 100,
-
+    isLoading: true,
     holdSizeDefaults: [
       { id: 0, name: "XS", radius: 10 },
       { id: 1, name: "S", radius: 13 },
@@ -49,6 +49,9 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         const firstProblemId = Object.keys(snapshot.val())[0];
         this.fetchProblemHoldsFromFB(firstProblemId);
         this.currentProblem = firstProblemId
+        this.isLoading = false
+      } else {
+        this.isLoading = false
 
       }
     },

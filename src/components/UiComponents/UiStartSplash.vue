@@ -3,8 +3,11 @@
     <div class="splash-item1">
       <q-img
         :src="bigLogo"
-        style="height: 230px; max-width: 300px"
+        height="240px"
+        width="300px"
       />
+      <!-- class="splash-logo" -->
+
     </div>
     <div class="splash-item2">
       <p class="loading-text">Laster buldere...</p>
@@ -32,14 +35,21 @@ const bigLogo = theBigLogo
 
 .splash-item1 {
   margin: 5px;
-  width: 300px;
+  width: 100%;
   height: 230px;
+  text-align: center;
+}
+
+.splash-logo {
+  height: 230px;
+  max-width: 300px;
+  text-align: center;
 }
 
 .splash-item2 {
   align-self: flex-start;
   margin: 5px;
-  width: 220px;
+  width: 100%;
   height: 90px;
 }
 
