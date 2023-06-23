@@ -12,6 +12,7 @@ export default defineConfig({
       sassVariables: 'src/quasar-variables.sass'
     })
   ],
+  base:'/bulderogbrak',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

@@ -155,9 +155,7 @@ const saveInFirebase = () => {
   console.log(date)
 }
 
-// const saveBackToFirebase = () => {
-//   svgMarkerStore.saveInfoBackToFirebase()
-// }
+
 
 </script>
 

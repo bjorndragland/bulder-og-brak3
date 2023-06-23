@@ -37,16 +37,6 @@ interface HoldSizeDefault {
   radius: number;
 }
 
-
-// interface setObjItem {
-//   createdAt: string;
-//   description: string;
-//   image: string;
-//   name: string;
-//   updatedAt: string
-// }
-
-
 export default interface State {
   lastSize: string;
   lastType: string;
@@ -55,12 +45,9 @@ export default interface State {
   selectedHoldFBId: number;
   problemsFB: Problems;
   newProblem: Problems;
-  // problemsLocal: Problems;
   problemHoldsFB: ProblemHolds;
   problemSortOrder: ProblemSortOrder[];
   newProblemHolds: ProblemHolds;
-  // problemHoldsLocal: ProblemHolds;
-  // collOfSets: any;
   holdSizeDefaults: HoldSizeDefault[];
   currentSet: string;
   currentProblem: number | string;
@@ -68,4 +55,5 @@ export default interface State {
   markerScale: number;
   zoomFactor: number;
   tab: string;
+  isLoading: boolean;
 }
