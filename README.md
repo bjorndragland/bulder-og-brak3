@@ -1,6 +1,10 @@
 # bulder-og-brak3
 
-Web app for logging boulder-problems on spraywalls or home climbing walls
+A web app for logging boulder problems on spraywalls and home climbing walls.
+
+A fun little project to improve my skills in:
+Vue 3, Typescript, Vite, Quasar, Pinia, Firebase and SVG.
+
 
 ## Project Setup
 
