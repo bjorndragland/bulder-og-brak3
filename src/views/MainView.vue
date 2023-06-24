@@ -13,6 +13,7 @@ import { onMounted } from 'vue';
 const svgMarkerStore = useSvgMarkerStore()
 
 onMounted(async () => {
+  svgMarkerStore.createTimeStampForFirebase()
   await svgMarkerStore.fetchProblemsFromFB()
 })
 

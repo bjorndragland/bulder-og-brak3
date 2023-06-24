@@ -1,35 +1,31 @@
 <template>
   <div>
-    <q-btn
-          label="hent data"
-          @click="readFromFirebase"
-        />
+    <div class="non-scrollable">
+      <UiProblemCardAdd @clicked="addProblem" />
 
-        <UiProblemCardAdd @clicked="addProblem" />
-
-        <q-select
-          v-model="model"
-          dense
-          outlined
-          :options="options"
-          behavior="menu"
-          color="black"
-        />
-
-
-
-        <UiProblemCard
-          v-for="(value, key) in firebaseProblems"
-          :key="key"
-          :problemName="value.name"
-          :problemGrade="value.grade"
-          :problemGradeNum="value.gradeNum"
-          :problemDate="value.createdAt"
-          :problemDescription="value.description"
-          :problemCreator="value.setter"
-          :showDetails="false"
-          @click="pickProblemHolds(key)"
-        />
+      <q-select
+        v-model="model"
+        dense
+        outlined
+        :options="options"
+        behavior="menu"
+        color="black"
+      />
+    </div>
+    <div class="scrollable-list">
+      <UiProblemCard
+        v-for="(value, key) in firebaseProblems"
+        :key="key"
+        :problemName="value.name"
+        :problemGrade="value.grade"
+        :problemGradeNum="value.gradeNum"
+        :problemDate="value.createdAt"
+        :problemDescription="value.description"
+        :problemCreator="value.setter"
+        :showDetails="false"
+        @click="pickProblemHolds(key)"
+      />
+    </div>
   </div>
 </template>
 
@@ -50,10 +46,6 @@ const options = [
   'Nyeste først', 'Grad stigende', 'Grad synkende'
 ]
 
-const readFromFirebase = async () => {
-  svgMarkerStore.fetchProblemsFromFB()
-}
-
 const pickProblemHolds = (key: number | string) => {
   readHoldsFromFirebase(key);
   svgMarkerStore.currentProblem = key
@@ -71,5 +63,12 @@ const addProblem = function () {
 </script>
 
 <style scoped>
+.non-scrollable {
+  height: 120px;
+}
 
+.scrollable-list {
+  overflow-y: auto;
+  height: calc(100vh - 210px)
+}
 </style>

@@ -97,7 +97,6 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     },
 
     createNewProblem: function () {
-      console.log("says for it")
       const newProbObject = {
         name: "ny bulder",
         description: "",
@@ -114,8 +113,11 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       console.log(idRandom);
 
       this.problemsFB[idRandom] = newProbObject
-      // this.problemHoldsFB[idRandom] = newProbHoldsObject
       this.currentProblem = idRandom
+
+      this.appState = 'edit'
+      this.tab = 'tab3'
+
     },
 
     moveMarkerFBX: function (id: number, valueX: number) {
@@ -158,6 +160,11 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     deleteSelectedHold: function () {
       delete this.problemHoldsFB[this.selectedHoldFBId]
     },
+
+    createTimeStampForFirebase: function () {
+      let date = Date.now() + 9900000
+      console.log(date)
+    }
 
     // sortProblems: function (sorting: string) {
     // }

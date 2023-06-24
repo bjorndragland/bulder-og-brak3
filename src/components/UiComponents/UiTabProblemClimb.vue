@@ -21,7 +21,7 @@
     <div class="freePlace">
       <q-btn
         padding="sm"
-        fab
+        fab 
         color="black"
         @click="zoomInOut"
       >
