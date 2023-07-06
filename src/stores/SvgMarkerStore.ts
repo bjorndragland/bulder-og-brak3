@@ -162,7 +162,7 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     },
 
     createTimeStampForFirebase: function () {
-      let date = Date.now() + 9900000
+      const date = Date.now() + 9900000
       console.log(date)
     }
 

@@ -8,6 +8,7 @@
     <q-card-section class="q-py-sm row bg-blue-grey-2">
       <div class="col-2">
         <q-icon
+        color="green-10"
           name="add_circle"
           size="32px"
         />
@@ -20,8 +21,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useSvgMarkerStore } from '@/stores/SvgMarkerStore';
-// const svgMarkerStore = useSvgMarkerStore()
 const emit = defineEmits<(event: 'clicked') => void>();
 
 const onClick = () => {
