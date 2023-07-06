@@ -36,15 +36,15 @@ const arrayOfColors = [
   { grade: "7A+", color: "red-grade col-4 text-weight-bold" },
   { grade: "7B", color: "black-grade col-4 text-weight-bold" },
   { grade: "7B+", color: "black-grade col-4 text-weight-bold" },
-  { grade: "7C", color: "black-grade col-4" },
-  { grade: "7C+", color: "black-grade col-4" },
-  { grade: "8A", color: "black-grade col-4" },
-  { grade: "8A+", color: "black-grade col-4" },
-  { grade: "8B", color: "black-grade col-4" },
-  { grade: "8B+", color: "black-grade col-4" },
-  { grade: "8C", color: "black-grade col-4" },
-  { grade: "8C+", color: "black-grade col-4" },
-  { grade: "9A", color: "black-grade col-4" },
+  { grade: "7C", color: "black-grade col-4 text-weight-bold" },
+  { grade: "7C+", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8A", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8A+", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8B", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8B+", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8C", color: "black-grade col-4 text-weight-bold" },
+  { grade: "8C+", color: "black-grade col-4 text-weight-bold" },
+  { grade: "9A", color: "black-grade col-4 text-weight-bold" },
 ]
 
 </script>
@@ -53,10 +53,11 @@ const arrayOfColors = [
 .black-grade {
   background-color: rgb(0, 0, 0);
   height: 24px;
-  width: 32px;
+  width: 38px;
   border: 1px solid grey;
   border-radius: 4px;
   text-align: center;
+  color: white;
 }
 
 .white-grade {
