@@ -4,6 +4,7 @@ import type State from '../types/State'
 import { defineStore } from 'pinia'
 import db from '../firebase/init'
 import { get, set, ref as dbRef } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
 export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
   state: (): State => ({
@@ -39,6 +40,17 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
 
   },
   actions: {
+
+
+    async fetchUserData() {
+      const auth = getAuth();
+      if (auth.currentUser) {
+        // await this.fetchUser(auth.currentUser.uid);
+        console.log('User is authenticated');
+      } else {
+        console.log('User is not authenticated');
+      }
+    },
 
     async fetchProblemsFromFB() {
       const problemsRef = dbRef(db, 'problems');
