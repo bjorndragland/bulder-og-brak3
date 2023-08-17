@@ -9,11 +9,20 @@
     dense
     outlined
   />
+
+  <q-file
+    v-model="file"
+    dense
+    
+  />
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
 const svgMarkerStore = useSvgMarkerStore();
+const file = ref(null);
+
 
 </script>
 

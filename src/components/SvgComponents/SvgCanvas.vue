@@ -65,8 +65,8 @@
 // redpoint_1_red.jpg 1402 x 1408
 
 import { computed, ref } from 'vue';
-// import myImage from '../../assets/hjemmevegg.jpg';
-import myImage from '../../assets/redpoint_1_red.jpg';
+import myImage from '../../assets/hjemmevegg1.jpg';
+// import myImage from '../../assets/redpoint_1_red.jpg';
 import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
 import SvgHoldMarker from './SvgHoldMarker.vue'
 import type HoldMarkerFB from '../../types/HoldMarkerFB'
@@ -224,4 +224,16 @@ const objOfHoldsFB = computed(() => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.svg-zoom1 {
+  width: 100%;
+  height: 100%;
+  transition: width 0.3s, height 0.3s ease-in-out;
+}
+
+.svg-zoom2 {
+  width: 160%;
+  height: 160%;
+  transition: width 0.3s, height 0.3s ease-in-out;
+}
+</style>
