@@ -13,16 +13,24 @@
   <q-file
     v-model="file"
     dense
-    
   />
+
+  <div v-for="(value, key) in firebaseSets" :key="key">
+    {{ value.name }} og {{ key }} og {{ value.image }}
+  </div>
+
+
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
 const svgMarkerStore = useSvgMarkerStore();
 const file = ref(null);
 
+const firebaseSets = computed(() => {
+  return svgMarkerStore.setsFB
+})
 
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <!-- <UiStartSplash v-if="svgMarkerStore.isLoading" /> -->
   <!-- <TheMain v-else /> -->
-  <TheMain/>
+  <TheMain />
 </template>
 
 <script setup lang="ts">
@@ -14,8 +14,9 @@ import { onMounted } from 'vue';
 const svgMarkerStore = useSvgMarkerStore()
 
 onMounted(async () => {
-  svgMarkerStore.createTimeStampForFirebase()
+  // svgMarkerStore.createTimeStampForFirebase()
   await svgMarkerStore.fetchUserData()
+  await svgMarkerStore.fetchSetsFromFB()
   await svgMarkerStore.fetchProblemsFromFB()
 })
 
@@ -24,4 +25,6 @@ onMounted(async () => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

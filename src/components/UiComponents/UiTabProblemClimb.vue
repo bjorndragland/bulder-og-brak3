@@ -51,7 +51,7 @@
         :showDetails="true"
       />
 
-      <UiProblemPrevNext />
+      <!-- <UiProblemPrevNext /> -->
     </q-tab-panel>
 
     <q-tab-panel
@@ -142,7 +142,7 @@ import SvgIconZoomIn from '@/components/SvgComponents/SvgIconZoomIn.vue'
 import SvgIconZoomOut from '@/components/SvgComponents/SvgIconZoomOut.vue'
 import UiMarkerEditor from './UiMarkerEditor.vue'
 import UiGradeSlider from './UiGradeSlider.vue'
-import UiProblemPrevNext from './UiProblemPrevNext.vue'
+// import UiProblemPrevNext from './UiProblemPrevNext.vue'
 
 
 const svgMarkerStore = useSvgMarkerStore();
