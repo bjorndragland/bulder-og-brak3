@@ -31,6 +31,20 @@ interface ProblemHolds {
   [key: string]: ProblemHold;
 }
 
+interface WallSet {
+  createdAt: string;
+  description: string;
+  endedAt: string;
+  image: string;
+  imageSize: object;
+  name: string;
+  updatedAt: string;
+}
+
+interface WallSets {
+  [key: string]: WallSet
+}
+
 interface HoldSizeDefault {
   id: number;
   name: string;
@@ -46,6 +60,7 @@ export default interface State {
   problemsFB: Problems;
   newProblem: Problems;
   problemHoldsFB: ProblemHolds;
+  setsFB: WallSets;
   problemSortOrder: ProblemSortOrder[];
   newProblemHolds: ProblemHolds;
   holdSizeDefaults: HoldSizeDefault[];

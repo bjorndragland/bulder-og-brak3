@@ -18,6 +18,7 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     problemsFB: {},
     problemSortOrder: [],
     problemHoldsFB: {},
+    setsFB: {},
     newProblem: {},
     newProblemHolds: {},
     wallWidth: 3.1,
@@ -80,6 +81,17 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         }
       }
     },
+
+
+    async fetchSetsFromFB() {
+      console.log("hello y")
+      const setsRef = dbRef(db, 'sets')
+      const snapshot = await get(setsRef);
+      if (snapshot.exists()) {
+        this.setsFB = snapshot.val()
+      }
+    },
+
 
     async saveInfoBackToFirebase() {
       const objHoldsToSave = this.problemHoldsFB
@@ -173,10 +185,10 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       delete this.problemHoldsFB[this.selectedHoldFBId]
     },
 
-    createTimeStampForFirebase: function () {
-      const date = Date.now() + 9900000
-      console.log(date)
-    }
+    // createTimeStampForFirebase: function () {
+    //   const date = Date.now() + 9900000
+    //   console.log(date)
+    // }
 
     // sortProblems: function (sorting: string) {
     // }

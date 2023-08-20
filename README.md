@@ -5,6 +5,8 @@ A web app for logging boulder problems on spraywalls and home climbing walls.
 A fun little project to improve my skills in:
 Vue 3, Typescript, Vite, Quasar, Pinia, Firebase and SVG.
 
+![bulder_og_brak_1](https://github.com/bjorndragland/bulder-og-brak3/assets/26490838/2e2a8978-9dbb-4fb9-a242-2d061f7ab535)
+
 
 ## Project Setup
 

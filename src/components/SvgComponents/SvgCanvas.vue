@@ -4,7 +4,7 @@
     xmlns="http://www.w3.org/2000/svg"
     :height="heightString"
     :width="widthString"
-    viewBox="0 0 1402 1408"
+    viewBox="0 0 1352 1513"
     @mousedown="startDragM($event)"
     @touchstart="startDragT($event)"
     @mousemove="dragM($event)"
@@ -19,15 +19,15 @@
       fill="#f44336"
       x="0"
       y="0"
-      height="400"
-      width="320"
+      width="1352"
+      height="1513"
     />
 
     <image
       id="svgimage"
       :href="wallImage"
-      width="1402"
-      height="1408"
+      width="1342"
+      height="1503"
       x="5"
       y="5"
       preserveAspectRatio="xMidYMid meet"
@@ -35,8 +35,8 @@
     <rect
       x="0"
       y="0"
-      width="1402"
-      height="1408"
+      width="1352"
+      height="1513"
       fill="grey"
       fill-opacity="0"
       pointer-events="visible"
@@ -63,9 +63,11 @@
 
 // hjemmevegg.jpg 1367 x 1616
 // redpoint_1_red.jpg 1402 x 1408
+// hjemmeveggen_3_red.jpg 1342 x 1503
 
 import { computed, ref } from 'vue';
-import myImage from '../../assets/hjemmevegg1.jpg';
+import myImage from '../../assets/hjemmeveggen_2_red.jpg';
+// import myImage from '../../assets/hjemmevegg1.jpg';
 // import myImage from '../../assets/redpoint_1_red.jpg';
 import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
 import SvgHoldMarker from './SvgHoldMarker.vue'
