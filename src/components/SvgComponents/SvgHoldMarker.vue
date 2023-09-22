@@ -9,8 +9,8 @@
       :cx="props.markerX"
       :cy="props.markerY"
       :r="sizeToRadius"
-      fill="grey"
-      fill-opacity="0"
+      :fill="typeToColor"
+      :fill-opacity="showFill"
       :stroke="typeToColor"
       stroke-width="4px"
       pointer-events="visible"
@@ -38,14 +38,14 @@
         stroke-width="4px"
         fill="none"
         :points="`${markerX - sizeToRadius - 2},${markerY - sizeToRadius / 2} ${markerX - sizeToRadius - 2},
-        ${markerY - sizeToRadius - 2} ${markerX - sizeToRadius / 2}, ${markerY - sizeToRadius - 2}`"
+                ${markerY - sizeToRadius - 2} ${markerX - sizeToRadius / 2}, ${markerY - sizeToRadius - 2}`"
       />
       <polyline
         stroke="white"
         stroke-width="2px"
         fill="none"
         :points="`${markerX - sizeToRadius - 1},${markerY - sizeToRadius / 2} ${markerX - sizeToRadius - 1},
-        ${markerY - sizeToRadius - 1} ${markerX - sizeToRadius / 2}, ${markerY - sizeToRadius - 1}`"
+                ${markerY - sizeToRadius - 1} ${markerX - sizeToRadius / 2}, ${markerY - sizeToRadius - 1}`"
       />
 
       <!-- upper right tick -->
@@ -54,14 +54,14 @@
         stroke-width="4px"
         fill="none"
         :points="`${markerX + sizeToRadius + 2},${markerY - sizeToRadius / 2} ${markerX + sizeToRadius + 2},
-        ${markerY - sizeToRadius - 2} ${markerX + sizeToRadius / 2}, ${markerY - sizeToRadius - 2}`"
+                ${markerY - sizeToRadius - 2} ${markerX + sizeToRadius / 2}, ${markerY - sizeToRadius - 2}`"
       />
       <polyline
         stroke="white"
         stroke-width="2px"
         fill="none"
         :points="`${markerX + sizeToRadius + 1},${markerY - sizeToRadius / 2} ${markerX + sizeToRadius + 1},
-        ${markerY - sizeToRadius - 1} ${markerX + sizeToRadius / 2}, ${markerY - sizeToRadius - 1}`"
+                ${markerY - sizeToRadius - 1} ${markerX + sizeToRadius / 2}, ${markerY - sizeToRadius - 1}`"
       />
 
       <!-- lower left tick -->
@@ -70,14 +70,14 @@
         stroke-width="4px"
         fill="none"
         :points="`${markerX - sizeToRadius - 2},${markerY + sizeToRadius / 2} ${markerX - sizeToRadius - 2},
-        ${markerY + sizeToRadius + 2} ${markerX - sizeToRadius / 2}, ${markerY + sizeToRadius + 2}`"
+                ${markerY + sizeToRadius + 2} ${markerX - sizeToRadius / 2}, ${markerY + sizeToRadius + 2}`"
       />
       <polyline
         stroke="white"
         stroke-width="2px"
         fill="none"
         :points="`${markerX - sizeToRadius - 1},${markerY + sizeToRadius / 2} ${markerX - sizeToRadius - 1},
-        ${markerY + sizeToRadius + 1} ${markerX - sizeToRadius / 2}, ${markerY + sizeToRadius + 1}`"
+                ${markerY + sizeToRadius + 1} ${markerX - sizeToRadius / 2}, ${markerY + sizeToRadius + 1}`"
       />
 
       <!-- lower right tick -->
@@ -86,14 +86,14 @@
         stroke-width="4px"
         fill="none"
         :points="`${markerX + sizeToRadius + 2},${markerY + sizeToRadius / 2} ${markerX + sizeToRadius + 2},
-        ${markerY + sizeToRadius + 2} ${markerX + sizeToRadius / 2}, ${markerY + sizeToRadius + 2}`"
+                ${markerY + sizeToRadius + 2} ${markerX + sizeToRadius / 2}, ${markerY + sizeToRadius + 2}`"
       />
       <polyline
         stroke="white"
         stroke-width="2px"
         fill="none"
         :points="`${markerX + sizeToRadius + 1},${markerY + sizeToRadius / 2} ${markerX + sizeToRadius + 1},
-        ${markerY + sizeToRadius + 1} ${markerX + sizeToRadius / 2}, ${markerY + sizeToRadius + 1}`"
+                ${markerY + sizeToRadius + 1} ${markerX + sizeToRadius / 2}, ${markerY + sizeToRadius + 1}`"
       />
     </g>
   </g>
@@ -112,7 +112,7 @@ const svgMarkerStore = useSvgMarkerStore()
 const originString = computed(() => {
   return props.markerX + " " + props.markerY
 })
-const scaleString = computed(()=>{
+const scaleString = computed(() => {
   let scaleComponent = svgMarkerStore.markerScale
   return `scale(${scaleComponent} ${scaleComponent})`
 })
@@ -137,9 +137,21 @@ const props = defineProps(
     markerType: {
       required: true,
       type: String
+    },
+    markerThumb: {
+      required: true,
+      type: Boolean
     }
   }
 )
+
+const showFill = computed(()=>{
+  if(props.markerThumb){
+    return 1
+  } else{
+    return 0
+  }
+})
 
 const sizeToRadius = computed(() => {
   let theRadius: number = 10

@@ -14,7 +14,7 @@
         />
       </div>
       <div class="col-10 text-subtitle2 q-pt-xs text-weight-bold">
-        Legg til nytt problem
+        Legg til ny vegg/sett
       </div>
     </q-card-section>
   </q-card>

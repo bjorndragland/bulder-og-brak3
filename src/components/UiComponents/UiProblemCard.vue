@@ -1,42 +1,42 @@
 <template>
   <!-- flat -->
+  <!-- bordered -->
   <q-card
-    bordered
+    flat
     class="my-card q-my-md"
+    
   >
-    <q-card-section class="q-py-xs q-mx-none">
-      <div class="text-subtitle2 text-weight-bold">
-        {{ props.problemName }}
+
+    <div class="row">
+
+      <SvgThumbnail />
+
+      <div class="q-ml-md">
+        <div class="row">
+          <UiGradeBadge
+            :problemGrade="props.problemGrade"
+            :problemGradeNum="props.problemGradeNum"
+          />
+          <div class="text-subtitle2 text-weight-bold q-ml-md">
+            {{ props.problemName }}
+          </div>
+        </div>
+        <div class="text-caption q-mt-xs">
+          {{ props.problemDate }}
+        </div>
+        <div class="text-caption">
+          {{ props.problemCreator }}
+        </div>
       </div>
-      <q-separator color="blue-grey-5" />
-    </q-card-section>
-    <!-- q-pt-none -->
-    <q-card-section class="q-py-md row">
-      <UiGradeBadge
-        :problemGrade="props.problemGrade"
-        :problemGradeNum="props.problemGradeNum"
-      />
-      <div class="col-4 text-center text-caption">
-        {{ props.problemDate }}
-      </div>
-      <div class="col-4 text-center text-caption">
-        {{ props.problemCreator }}
-      </div>
-    </q-card-section>
-    <q-card-section
-      v-if="props.showDetails"
-      class="q-pt-xs row"
-    >
-      <div class="text-caption">
-        {{ props.problemDescription }}
-      </div>
-    </q-card-section>
+    </div>
+
   </q-card>
 </template>
 
 <script setup lang="ts">
 // import { computed } from 'vue';
 import UiGradeBadge from './UiGradeBadge.vue';
+import SvgThumbnail from '../SvgComponents/SvgThumbnail.vue'
 
 const props = defineProps(
   {
@@ -90,5 +90,4 @@ const props = defineProps(
   /* Animate the hover effect */
 
 }
-
 </style>

@@ -49,11 +49,6 @@ const userStore = useUserStore();
 
 const bigLogo = theBigLogo
 
-// const saveInFirebase = () => {
-//   let date = Date.now() + 9900000
-//   console.log(date)
-// }
-
 const email = ref('');
 const password = ref('');
 

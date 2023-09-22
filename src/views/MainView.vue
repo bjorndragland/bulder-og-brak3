@@ -16,8 +16,10 @@ const svgMarkerStore = useSvgMarkerStore()
 onMounted(async () => {
   // svgMarkerStore.createTimeStampForFirebase()
   await svgMarkerStore.fetchUserData()
+  await svgMarkerStore.fetchImageUrl('images/hjemmeveggen_2_red.jpg')
   await svgMarkerStore.fetchSetsFromFB()
   await svgMarkerStore.fetchProblemsFromFB()
+  
 })
 
 // const isLoading = ref(false)

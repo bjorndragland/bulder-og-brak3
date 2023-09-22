@@ -8,7 +8,9 @@ interface Problem {
   setter: string;
   image: string;
   set: string;
-  updatedAt: string
+  updatedAt: string,
+  userId: string,
+  problemHolds: ProblemHolds,
 }
 
 interface Problems {
@@ -32,6 +34,7 @@ interface ProblemHolds {
 }
 
 interface WallSet {
+  active: boolean;
   createdAt: string;
   description: string;
   endedAt: string;
@@ -57,6 +60,7 @@ export default interface State {
   appState: string;
   selectedHoldId: string;
   selectedHoldFBId: number;
+  problemsLocal: Problems;
   problemsFB: Problems;
   newProblem: Problems;
   problemHoldsFB: ProblemHolds;
@@ -71,4 +75,5 @@ export default interface State {
   zoomFactor: number;
   tab: string;
   isLoading: boolean;
+  imageUrl: string;
 }

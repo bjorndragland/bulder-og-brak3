@@ -5,6 +5,8 @@ import { defineStore } from 'pinia'
 import db from '../firebase/init'
 import { get, set, ref as dbRef } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+// import { useUserStore } from "./UserStore"
+import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
 
 export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
   state: (): State => ({
@@ -16,6 +18,7 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     currentSet: "s10001",
     currentProblem: 0,
     problemsFB: {},
+    problemsLocal: {},
     problemSortOrder: [],
     problemHoldsFB: {},
     setsFB: {},
@@ -32,7 +35,7 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       { id: 3, name: "L", radius: 21 },
       { id: 4, name: "XL", radius: 26 },
     ],
-
+    imageUrl: "null",
     tab: 'tab2'
 
 
@@ -42,6 +45,18 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
   },
   actions: {
 
+    async fetchImageUrl(imagePath: string) {
+      const storage = getStorage();
+      const imageRef = storageRef(storage, imagePath);
+
+      try {
+        const url = await getDownloadURL(imageRef);
+        this.imageUrl = url;
+      } catch (error) {
+        console.error("error")
+      }
+
+    },
 
     async fetchUserData() {
       const auth = getAuth();
@@ -60,9 +75,9 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         this.problemsFB = snapshot.val()
         // hent holds fra første problem
         const firstProblemId = Object.keys(snapshot.val())[0];
-        this.fetchProblemHoldsFromFB(firstProblemId);
         this.currentProblem = firstProblemId
         this.isLoading = false
+        this.fetchProblemHoldsFromObject()
       } else {
         this.isLoading = false
 
@@ -70,16 +85,8 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     },
 
 
-    async fetchProblemHoldsFromFB(key: string | number) {
-      const problemHoldsRef = dbRef(db, 'problemHolds');
-      const snapshot = await get(problemHoldsRef);
-      if (snapshot.exists()) {
-        if (snapshot.val()[key]) {
-          this.problemHoldsFB = snapshot.val()[key]
-        } else {
-          this.problemHoldsFB = {}
-        }
-      }
+    async fetchProblemHoldsFromObject() {
+      this.problemHoldsFB = this.problemsFB[this.currentProblem].problemHolds
     },
 
 
@@ -92,14 +99,10 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       }
     },
 
-
     async saveInfoBackToFirebase() {
-      const objHoldsToSave = this.problemHoldsFB
       const idToRef = this.currentProblem
-      set(dbRef(db, 'problemHolds/' + idToRef),
-        objHoldsToSave
-      )
       const objProbToSave = this.problemsFB[this.currentProblem]
+      objProbToSave.problemHolds = this.problemHoldsFB
       set(dbRef(db, 'problems/' + idToRef),
         objProbToSave
       )
@@ -107,9 +110,9 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
 
     deleteCurrentProblemFromFB: function () {
       const idToRef = this.currentProblem
-      set(dbRef(db, 'problemHolds/' + idToRef),
-        null
-      )
+      // set(dbRef(db, 'problemHolds/' + idToRef),
+      //   null
+      // )
       set(dbRef(db, 'problems/' + idToRef),
         null
       )
@@ -121,6 +124,13 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     },
 
     createNewProblem: function () {
+      const auth = getAuth()
+      let userIdFB: string
+      if (auth.currentUser) {
+        userIdFB = auth.currentUser.uid
+      } else {
+        userIdFB = "tom"
+      }
       const newProbObject = {
         name: "ny bulder",
         description: "",
@@ -130,7 +140,9 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         setter: "Bjørn",
         image: "",
         set: "334",
-        updatedAt: "i dag"
+        updatedAt: "i dag",
+        userId: userIdFB,
+        problemHolds: {},
       }
 
       const idRandom = Math.round(Math.random() * 1000000000).toString()
@@ -141,17 +153,14 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
 
       this.appState = 'edit'
       this.tab = 'tab3'
-
     },
 
     moveMarkerFBX: function (id: number, valueX: number) {
-      this.problemHoldsFB[id].posX = valueX
+      this.problemHoldsFB[id].posX = Math.round(valueX)
     },
     moveMarkerFBY: function (id: number, valueY: number) {
-      this.problemHoldsFB[id].posY = valueY
-
+      this.problemHoldsFB[id].posY = Math.round(valueY)
     },
-
 
     nudgeMarkerXPlusFB: function () {
       this.problemHoldsFB[this.selectedHoldFBId].posX += 3
@@ -169,7 +178,6 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       this.problemHoldsFB[this.selectedHoldFBId].posY += 3
     },
 
-
     changeHoldSizeOfSelected: function (holdSizeNum: number) {
       const result = this.holdSizeDefaults.find(({ id }) => id === holdSizeNum)
       this.problemHoldsFB[this.selectedHoldFBId].size = result!.name
@@ -184,11 +192,6 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     deleteSelectedHold: function () {
       delete this.problemHoldsFB[this.selectedHoldFBId]
     },
-
-    // createTimeStampForFirebase: function () {
-    //   const date = Date.now() + 9900000
-    //   console.log(date)
-    // }
 
     // sortProblems: function (sorting: string) {
     // }
