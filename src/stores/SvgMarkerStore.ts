@@ -1,20 +1,24 @@
 // import type HoldMarker from '../types/HoldMarker'
-import type State from '../types/State'
+import type State from "../types/State";
 
-import { defineStore } from 'pinia'
-import db from '../firebase/init'
-import { get, set, ref as dbRef } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { defineStore } from "pinia";
+import db from "../firebase/init";
+import { get, set, ref as dbRef } from "firebase/database";
+import { getAuth } from "firebase/auth";
 // import { useUserStore } from "./UserStore"
-import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref as storageRef,
+  getDownloadURL,
+} from "firebase/storage";
 
-export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
+export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
   state: (): State => ({
     lastSize: "S",
     lastType: "middle",
     selectedHoldId: "",
     selectedHoldFBId: 0,
-    appState: 'info',
+    appState: "info",
     currentSet: "s10001",
     currentProblem: 0,
     problemsFB: {},
@@ -36,15 +40,10 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
       { id: 4, name: "XL", radius: 26 },
     ],
     imageUrl: "null",
-    tab: 'tab2'
-
-
+    tab: "tab2",
   }),
-  getters: {
-
-  },
+  getters: {},
   actions: {
-
     async fetchImageUrl(imagePath: string) {
       const storage = getStorage();
       const imageRef = storageRef(storage, imagePath);
@@ -53,69 +52,61 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         const url = await getDownloadURL(imageRef);
         this.imageUrl = url;
       } catch (error) {
-        console.error("error")
+        console.error("error");
       }
-
     },
 
     async fetchUserData() {
       const auth = getAuth();
       if (auth.currentUser) {
         // await this.fetchUser(auth.currentUser.uid);
-        console.log('User is authenticated');
+        console.log("User is authenticated");
       } else {
-        console.log('User is not authenticated');
+        console.log("User is not authenticated");
       }
     },
 
     async fetchProblemsFromFB() {
-      const problemsRef = dbRef(db, 'problems');
+      const problemsRef = dbRef(db, "problems");
       const snapshot = await get(problemsRef);
       if (snapshot.exists()) {
-        this.problemsFB = snapshot.val()
+        this.problemsFB = snapshot.val();
         // hent holds fra første problem
         const firstProblemId = Object.keys(snapshot.val())[0];
-        this.currentProblem = firstProblemId
-        this.isLoading = false
-        this.fetchProblemHoldsFromObject()
+        this.currentProblem = firstProblemId;
+        this.isLoading = false;
+        this.fetchProblemHoldsFromObject();
       } else {
-        this.isLoading = false
-
+        this.isLoading = false;
       }
     },
 
-
     async fetchProblemHoldsFromObject() {
-      this.problemHoldsFB = this.problemsFB[this.currentProblem].problemHolds
+      this.problemHoldsFB = this.problemsFB[this.currentProblem].problemHolds;
     },
 
-
     async fetchSetsFromFB() {
-      console.log("hello y")
-      const setsRef = dbRef(db, 'sets')
+      console.log("hello y");
+      const setsRef = dbRef(db, "sets");
       const snapshot = await get(setsRef);
       if (snapshot.exists()) {
-        this.setsFB = snapshot.val()
+        this.setsFB = snapshot.val();
       }
     },
 
     async saveInfoBackToFirebase() {
-      const idToRef = this.currentProblem
-      const objProbToSave = this.problemsFB[this.currentProblem]
-      objProbToSave.problemHolds = this.problemHoldsFB
-      set(dbRef(db, 'problems/' + idToRef),
-        objProbToSave
-      )
+      const idToRef = this.currentProblem;
+      const objProbToSave = this.problemsFB[this.currentProblem];
+      objProbToSave.problemHolds = this.problemHoldsFB;
+      set(dbRef(db, "problems/" + idToRef), objProbToSave);
     },
 
     deleteCurrentProblemFromFB: function () {
-      const idToRef = this.currentProblem
+      const idToRef = this.currentProblem;
       // set(dbRef(db, 'problemHolds/' + idToRef),
       //   null
       // )
-      set(dbRef(db, 'problems/' + idToRef),
-        null
-      )
+      set(dbRef(db, "problems/" + idToRef), null);
     },
     deleteCurrentProblemFromLocal: function () {
       const idToRef = this.currentProblem;
@@ -124,12 +115,12 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
     },
 
     createNewProblem: function () {
-      const auth = getAuth()
-      let userIdFB: string
+      const auth = getAuth();
+      let userIdFB: string;
       if (auth.currentUser) {
-        userIdFB = auth.currentUser.uid
+        userIdFB = auth.currentUser.uid;
       } else {
-        userIdFB = "tom"
+        userIdFB = "tom";
       }
       const newProbObject = {
         name: "ny bulder",
@@ -143,58 +134,57 @@ export const useSvgMarkerStore = defineStore('SvgMarkerStore', {
         updatedAt: "i dag",
         userId: userIdFB,
         problemHolds: {},
-      }
+      };
 
-      const idRandom = Math.round(Math.random() * 1000000000).toString()
+      const idRandom = Math.round(Math.random() * 1000000000).toString();
       console.log(idRandom);
 
-      this.problemsFB[idRandom] = newProbObject
-      this.currentProblem = idRandom
+      this.problemsFB[idRandom] = newProbObject;
+      this.currentProblem = idRandom;
 
-      this.appState = 'edit'
-      this.tab = 'tab3'
+      this.appState = "edit";
+      this.tab = "tab3";
     },
 
     moveMarkerFBX: function (id: number, valueX: number) {
-      this.problemHoldsFB[id].posX = Math.round(valueX)
+      this.problemHoldsFB[id].posX = Math.round(valueX);
     },
     moveMarkerFBY: function (id: number, valueY: number) {
-      this.problemHoldsFB[id].posY = Math.round(valueY)
+      this.problemHoldsFB[id].posY = Math.round(valueY);
     },
 
     nudgeMarkerXPlusFB: function () {
-      this.problemHoldsFB[this.selectedHoldFBId].posX += 3
+      this.problemHoldsFB[this.selectedHoldFBId].posX += 3;
     },
 
     nudgeMarkerXMinusFB: function () {
-      this.problemHoldsFB[this.selectedHoldFBId].posX -= 3
+      this.problemHoldsFB[this.selectedHoldFBId].posX -= 3;
     },
 
     nudgeMarkerYPlusFB: function () {
-      this.problemHoldsFB[this.selectedHoldFBId].posY -= 3
+      this.problemHoldsFB[this.selectedHoldFBId].posY -= 3;
     },
 
     nudgeMarkerYminusFB: function () {
-      this.problemHoldsFB[this.selectedHoldFBId].posY += 3
+      this.problemHoldsFB[this.selectedHoldFBId].posY += 3;
     },
 
     changeHoldSizeOfSelected: function (holdSizeNum: number) {
-      const result = this.holdSizeDefaults.find(({ id }) => id === holdSizeNum)
-      this.problemHoldsFB[this.selectedHoldFBId].size = result!.name
-      this.lastSize = result!.name
+      const result = this.holdSizeDefaults.find(({ id }) => id === holdSizeNum);
+      this.problemHoldsFB[this.selectedHoldFBId].size = result!.name;
+      this.lastSize = result!.name;
     },
 
     changeHoldTypeOfSelected: function (holdType: string) {
-      this.problemHoldsFB[this.selectedHoldFBId].type = holdType
-      this.lastType = holdType
+      this.problemHoldsFB[this.selectedHoldFBId].type = holdType;
+      this.lastType = holdType;
     },
 
     deleteSelectedHold: function () {
-      delete this.problemHoldsFB[this.selectedHoldFBId]
+      delete this.problemHoldsFB[this.selectedHoldFBId];
     },
 
     // sortProblems: function (sorting: string) {
     // }
-
-  }
-})
+  },
+});

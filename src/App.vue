@@ -5,13 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView } from "vue-router";
 </script>
 
 <style>
 body {
-  color: black
+  color: black;
 }
-
-
 </style>

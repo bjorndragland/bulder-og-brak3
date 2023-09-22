@@ -1,4 +1,3 @@
-
 interface Problem {
   name: string;
   description: string;
@@ -8,19 +7,18 @@ interface Problem {
   setter: string;
   image: string;
   set: string;
-  updatedAt: string,
-  userId: string,
-  problemHolds: ProblemHolds,
+  updatedAt: string;
+  userId: string;
+  problemHolds: ProblemHolds;
 }
 
 interface Problems {
-  [key: string]: Problem
+  [key: string]: Problem;
 }
 
 interface ProblemSortOrder {
-  problemId: string
+  problemId: string;
 }
-
 
 interface ProblemHold {
   posX: number;
@@ -45,7 +43,7 @@ interface WallSet {
 }
 
 interface WallSets {
-  [key: string]: WallSet
+  [key: string]: WallSet;
 }
 
 interface HoldSizeDefault {

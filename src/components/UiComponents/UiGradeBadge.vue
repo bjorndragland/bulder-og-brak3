@@ -5,19 +5,17 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(
-  {
-    problemGrade: {
-      required: true,
-      type: String
-    },
-    problemGradeNum: {
-      required: true,
-      type: Number,
-      default: 3
-    }
-  }
-)
+const props = defineProps({
+  problemGrade: {
+    required: true,
+    type: String,
+  },
+  problemGradeNum: {
+    required: true,
+    type: Number,
+    default: 3,
+  },
+});
 
 const arrayOfColors = [
   { grade: "3", color: "white-grade col-4 text-weight-bold" },
@@ -45,8 +43,7 @@ const arrayOfColors = [
   { grade: "8C", color: "black-grade col-4 text-weight-bold" },
   { grade: "8C+", color: "black-grade col-4 text-weight-bold" },
   { grade: "9A", color: "black-grade col-4 text-weight-bold" },
-]
-
+];
 </script>
 
 <style scoped>

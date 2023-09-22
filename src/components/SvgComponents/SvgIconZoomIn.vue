@@ -16,31 +16,14 @@
       stroke-linejoin="round"
       stroke-width="2"
     />
-    <g
-      fill="none"
-      stroke="currentColor"
-    >
-      <path
-        d="m18 18 4 4"
-        stroke-linecap="round"
-        stroke-width="3"
-      />
-      <path
-        d="m6 11h10"
-        stroke-width="2"
-      />
-      <path
-        d="m11 6v10"
-        stroke-width="2"
-      />
+    <g fill="none" stroke="currentColor">
+      <path d="m18 18 4 4" stroke-linecap="round" stroke-width="3" />
+      <path d="m6 11h10" stroke-width="2" />
+      <path d="m11 6v10" stroke-width="2" />
     </g>
   </svg>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

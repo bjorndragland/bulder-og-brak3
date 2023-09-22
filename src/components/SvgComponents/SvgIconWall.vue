@@ -33,12 +33,9 @@
       stroke-linejoin="round"
       stroke-width="2"
     />
-
   </svg>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

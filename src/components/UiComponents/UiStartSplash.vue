@@ -1,13 +1,8 @@
 <template>
   <div class="splash-screen">
     <div class="splash-item1">
-      <q-img
-        :src="bigLogo"
-        height="240px"
-        width="300px"
-      />
+      <q-img :src="bigLogo" height="240px" width="300px" />
       <!-- class="splash-logo" -->
-
     </div>
     <div class="splash-item2">
       <p class="loading-text">Laster buldere...</p>
@@ -16,10 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import theBigLogo from '../../assets/logo_1.svg';
-const bigLogo = theBigLogo
-
-
+import theBigLogo from "../../assets/logo_1.svg";
+const bigLogo = theBigLogo;
 </script>
 
 <style scoped>

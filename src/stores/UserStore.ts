@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { defineStore } from "pinia";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 interface State {
   user: any | null;
@@ -7,17 +7,21 @@ interface State {
   error: string | null;
 }
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore("user", {
   state: (): State => ({
     user: null,
     loading: false,
-    error: null
+    error: null,
   }),
   actions: {
     async login(email: string, password: string) {
       try {
         const auth = getAuth();
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
         this.user = userCredential.user;
         this.error = null;
       } catch (error: any) {
@@ -33,7 +37,6 @@ export const useUserStore = defineStore('user', {
       } catch (error: any) {
         this.error = error.message;
       }
-    }
-  }
+    },
+  },
 });
-

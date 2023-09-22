@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    flat
-    class="my-card bg-grey-3"
-  >
+  <q-card flat class="my-card bg-grey-3">
     <!-- <p class="text-caption q-px-xs q-my-xs q-pt-xs q-mb-none ">Takmarkør</p> -->
     <!-- <p class="text-caption q-px-sm q-my-xs q-pt-xs q-mb-none ">Finjustering</p> -->
     <q-card-section>
@@ -58,10 +55,7 @@
         @change="selectSize"
       />
 
-      <q-btn-group
-        push
-        class="q-my-sm"
-      >
+      <q-btn-group push class="q-my-sm">
         <q-btn
           v-for="color in colors"
           :key="color.label"
@@ -75,32 +69,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
+import { ref } from "vue";
+import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 const svgMarkerStore = useSvgMarkerStore();
 
 const sizeModel = ref(0);
-const objMarkerLabel = { 0: 'XS', 1: 'S', 2: 'M', 3: 'L', 4: 'XL' }
+const objMarkerLabel = { 0: "XS", 1: "S", 2: "M", 3: "L", 4: "XL" };
 
 const deleteSelected = () => {
-  svgMarkerStore.deleteSelectedHold()
-}
+  svgMarkerStore.deleteSelectedHold();
+};
 
 const colors = [
-  { color: 'light-green-6', label: "start", holdType: "start" },
-  { color: 'light-blue-7', label: "midt", holdType: "middle" },
-  { color: 'purple-5', label: "topp", holdType: "end" },
-  { color: 'orange-7', label: "fot", holdType: "foot" }
+  { color: "light-green-6", label: "start", holdType: "start" },
+  { color: "light-blue-7", label: "midt", holdType: "middle" },
+  { color: "purple-5", label: "topp", holdType: "end" },
+  { color: "orange-7", label: "fot", holdType: "foot" },
 ];
 
 const selectSize = () => {
   svgMarkerStore.changeHoldSizeOfSelected(sizeModel.value);
-}
+};
 
 const selectColor = (holdType: string) => {
   svgMarkerStore.changeHoldTypeOfSelected(holdType);
-}
-
+};
 </script>
 
 <style scoped></style>
