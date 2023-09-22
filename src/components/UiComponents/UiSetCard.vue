@@ -1,31 +1,35 @@
 <template>
   <!-- flat -->
+  <!-- bordered -->
   <q-card
-    bordered
+    flat
     class="my-card q-my-md"
-    @click="onClick"
+    bordered
   >
-    <q-card-section class="q-py-sm row bg-grey-3">
-      <div class="col-2">
-        <q-icon
-        color="green-10"
-          name="add_circle"
-          size="32px"
-        />
-      </div>
-      <div class="col-10 text-subtitle2 q-pt-xs text-weight-bold">
-        Legg til nytt problem
-      </div>
+    <q-card-section>
+
+      {{ props.setName }}
+      {{ props.setActive }}
     </q-card-section>
   </q-card>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<(event: 'clicked') => void>();
+// import { computed } from 'vue';
 
-const onClick = () => {
-  emit('clicked');
-};
+const props = defineProps(
+  {
+    setName: {
+      required: true,
+      type: String
+    },
+    setActive: {
+      required: true,
+      type: Boolean
+    },
+  }
+)
+
 
 
 </script>

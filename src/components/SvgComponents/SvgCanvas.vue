@@ -53,6 +53,7 @@
         :markerSize="value.size"
         :markerId="key.toString()"
         :markerType="value.type"
+        :markerThumb=false
       />
     </g>
 
@@ -66,7 +67,7 @@
 // hjemmeveggen_3_red.jpg 1342 x 1503
 
 import { computed, ref } from 'vue';
-import myImage from '../../assets/hjemmeveggen_2_red.jpg';
+// import myImage from '../../assets/hjemmeveggen_2_red.jpg';
 // import myImage from '../../assets/hjemmevegg1.jpg';
 // import myImage from '../../assets/redpoint_1_red.jpg';
 import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
@@ -74,9 +75,9 @@ import SvgHoldMarker from './SvgHoldMarker.vue'
 import type HoldMarkerFB from '../../types/HoldMarkerFB'
 
 import type { HoldTypeTerm } from '../../types/HoldTypeTerm.js'
-const wallImage = myImage;
-const svgMarkerStore = useSvgMarkerStore()
 
+const svgMarkerStore = useSvgMarkerStore()
+const wallImage = svgMarkerStore.imageUrl;
 const offsetX = ref(0);
 const offsetY = ref(0);
 const dragging = ref(false);
@@ -219,7 +220,7 @@ const getTouchPosition = (evt: TouchEvent, svg: SVGGraphicsElement) => {
 const objOfHoldsFB = computed(() => {
   if (svgMarkerStore.problemHoldsFB) {
     return svgMarkerStore.problemHoldsFB
-  }else{
+  } else {
     return null
   }
 })

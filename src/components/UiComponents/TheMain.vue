@@ -54,7 +54,10 @@
           v-model="svgMarkerStore.tab"
           animated
         >
-          <q-tab-panel name="tab1">
+          <q-tab-panel
+          name="tab1"
+          class="q-pt-xs"
+          >
             <UiTabWallSettings />
           </q-tab-panel>
 

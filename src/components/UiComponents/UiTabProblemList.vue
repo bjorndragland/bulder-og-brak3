@@ -2,15 +2,23 @@
   <div>
     <div class="non-scrollable">
       <UiProblemCardAdd @clicked="addProblem" />
-
-      <q-select
-        v-model="model"
-        dense
-        outlined
-        :options="options"
-        behavior="menu"
-        color="black"
-      />
+      <div class="row">
+        <q-select
+          class="col-10"
+          v-model="model"
+          dense
+          outlined
+          :options="options"
+          behavior="menu"
+          color="black"
+        />
+        <q-btn
+          class="q-ml-md"
+          flat
+          padding="xs"
+          icon="filter_alt"
+        />
+      </div>
     </div>
     <div class="scrollable-list">
       <UiProblemCard
@@ -47,13 +55,15 @@ const options = [
 ]
 
 const pickProblemHolds = (key: number | string) => {
-  readHoldsFromFirebase(key);
+  // readHoldsFromFirebase(key);
   svgMarkerStore.currentProblem = key
   svgMarkerStore.tab = "tab3"
+  readHoldsFromFirebase();
+
 }
 
-const readHoldsFromFirebase = async (key: string | number) => {
-  svgMarkerStore.fetchProblemHoldsFromFB(key);
+const readHoldsFromFirebase = async () => {
+  svgMarkerStore.fetchProblemHoldsFromObject()
 }
 
 const addProblem = function () {
