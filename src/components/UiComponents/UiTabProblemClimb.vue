@@ -21,7 +21,7 @@
     <div class="freePlace">
       <q-btn
         padding="sm"
-        fab 
+        fab
         color="black"
         @click="zoomInOut"
       >
@@ -65,9 +65,7 @@
         <UiMarkerEditor />
         <UiGradeSlider v-model="selectedProbFB.gradeNum" />
         <q-card-section class="q-pt-xs">
-          <p class="q-mb-none q-mt-md">
-            Problemnavn
-          </p>
+          <p class="q-mb-none q-mt-md">Problemnavn</p>
           <q-input
             v-model="selectedProbFB.name"
             color="black"
@@ -75,9 +73,7 @@
             outlined
           />
 
-          <p class="q-mb-none q-mt-md">
-            Kreatør
-          </p>
+          <p class="q-mb-none q-mt-md">Kreatør</p>
           <q-input
             v-model="selectedProbFB.setter"
             color="black"
@@ -85,9 +81,7 @@
             outlined
           />
 
-          <p class="q-mb-none q-mt-md">
-            Beskrivelse
-          </p>
+          <p class="q-mb-none q-mt-md">Beskrivelse</p>
           <q-input
             v-model="selectedProbFB.description"
             color="black"
@@ -95,15 +89,55 @@
             outlined
           />
 
-          <p class="q-mb-none q-mt-md">
-            Dato
-          </p>
+          <p class="q-mb-none q-mt-md">Dato</p>
           <q-input
             v-model="selectedProbFB.createdAt"
             color="black"
             dense
             outlined
           />
+
+
+          <p class="q-mb-none q-mt-md">Dato</p>
+          <q-input
+            dense
+            outlined
+            v-model="dateProblemCreate"
+            mask="date"
+            :rules="['date']"
+          >
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer"
+              >
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date
+                    v-model="dateProblemCreate"
+                    color="light-blue-9"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn
+                        v-close-popup
+                        label="Close"
+                        color="light-blue-9"
+                        flat
+                      />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+
+          <q-btn @click="dateProblemCreate = inputTodaysDate()">klikk for i dag</q-btn>
+
+
 
           <q-btn
             class="q-mb-none q-mt-md"
@@ -133,39 +167,64 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
-import SvgCanvas from '@/components/SvgComponents/SvgCanvas.vue'
-import UiProblemCard from './UiProblemCard.vue'
+import { computed, ref } from "vue";
+import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
+import SvgCanvas from "@/components/SvgComponents/SvgCanvas.vue";
+import UiProblemCard from "./UiProblemCard.vue";
 
-import SvgIconZoomIn from '@/components/SvgComponents/SvgIconZoomIn.vue'
-import SvgIconZoomOut from '@/components/SvgComponents/SvgIconZoomOut.vue'
-import UiMarkerEditor from './UiMarkerEditor.vue'
-import UiGradeSlider from './UiGradeSlider.vue'
+import SvgIconZoomIn from "@/components/SvgComponents/SvgIconZoomIn.vue";
+import SvgIconZoomOut from "@/components/SvgComponents/SvgIconZoomOut.vue";
+import UiMarkerEditor from "./UiMarkerEditor.vue";
+import UiGradeSlider from "./UiGradeSlider.vue";
 // import UiProblemPrevNext from './UiProblemPrevNext.vue'
-
-
 const svgMarkerStore = useSvgMarkerStore();
+const dateProblemCreate = ref('2023/02/01')
+
 
 const zoomInOut = () => {
-  if (svgMarkerStore.zoomFactor == 100) { svgMarkerStore.zoomFactor = 160 } else {
-    svgMarkerStore.zoomFactor = 100
+  if (svgMarkerStore.zoomFactor == 100) {
+    svgMarkerStore.zoomFactor = 160;
+  } else {
+    svgMarkerStore.zoomFactor = 100;
   }
-}
+};
 
 const selectedProbFB = computed(() => {
-  return svgMarkerStore.problemsFB[svgMarkerStore.currentProblem]
-})
+  return svgMarkerStore.problemsFB[svgMarkerStore.currentProblem];
+});
 
 const deleteCurrentProblem = function () {
-  svgMarkerStore.deleteCurrentProblemFromFB()
-  svgMarkerStore.tab = "tab2"
-  svgMarkerStore.deleteCurrentProblemFromLocal()
-}
+  svgMarkerStore.deleteCurrentProblemFromFB();
+  svgMarkerStore.tab = "tab2";
+  svgMarkerStore.deleteCurrentProblemFromLocal();
+};
 
 const saveBackToFirebase = () => {
-  svgMarkerStore.saveInfoBackToFirebase()
+  svgMarkerStore.saveInfoBackToFirebase();
+};
+
+
+const inputTodaysDate = function () {
+  let curDate = new Date;
+  let inputYear = curDate.getFullYear();
+  let inputMonth = curDate.getMonth() + 1
+  let inputMonthString
+  let inputDay = curDate.getDate()
+  let inputDayString
+  if (inputMonth < 10) {
+    inputMonthString = `0${inputMonth}`;
+  } else {
+    inputMonthString = inputMonth.toString();
+  }
+  if (inputDay < 10) {
+    inputDayString = `0${inputDay}`;
+  } else {
+    inputDayString = inputDay.toString();
+  }
+  let fullInputDate = `${inputYear}/${inputMonthString}/${inputDayString}`
+  return fullInputDate
 }
+
 
 </script>
 
@@ -180,5 +239,4 @@ const saveBackToFirebase = () => {
   top: 50px;
   left: 22px;
 }
-
 </style>

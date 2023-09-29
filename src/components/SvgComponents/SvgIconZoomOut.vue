@@ -22,19 +22,11 @@
         stroke-linecap="round"
         stroke-width="3"
       />
-      <path
-        d="m6 11h10"
-        fill="none"
-        stroke-width="2"
-      />
+      <path d="m6 11h10" fill="none" stroke-width="2" />
     </g>
   </svg>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

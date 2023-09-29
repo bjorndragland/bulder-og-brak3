@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="non-scrollable">
-      <UiSetCardAdd />
+      <UiSetCardAddButton />
       <div class="row">
         <q-select
           class="col-10"
@@ -12,12 +12,7 @@
           behavior="menu"
           color="black"
         />
-        <q-btn
-          class="q-ml-md"
-          flat
-          padding="xs"
-          icon="filter_alt"
-        />
+        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
@@ -29,6 +24,8 @@
       />
     </div>
   </div>
+
+  <UiSetAddDialog />
 
   <!-- <q-input
     v-model="svgMarkerStore.wallWidth"
@@ -44,24 +41,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useSvgMarkerStore } from '../../stores/SvgMarkerStore'
-import UiSetCard from './UiSetCard.vue'
+import { ref, computed } from "vue";
+import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
+import UiSetCard from "./UiSetCard.vue";
+import UiSetAddDialog from "./UiSetAddDialog.vue";
 
-import UiSetCardAdd from './UiSetCardAdd.vue'
+import UiSetCardAddButton from "./UiSetCardAddButton.vue";
 
 const svgMarkerStore = useSvgMarkerStore();
 // const file = ref(null);
-const model = ref('Nyeste først');
-const options = [
-  'Nyeste først', 'Grad stigende', 'Grad synkende'
-]
+const model = ref("Nyeste først");
+const options = ["Nyeste først", "Grad stigende", "Grad synkende"];
 
 const firebaseSets = computed(() => {
-  return svgMarkerStore.setsFB
-})
-
-
+  return svgMarkerStore.setsFB;
+});
 </script>
 
 <style scoped>
@@ -71,6 +65,6 @@ const firebaseSets = computed(() => {
 
 .scrollable-list {
   overflow-y: auto;
-  height: calc(100vh - 210px)
+  height: calc(100vh - 210px);
 }
 </style>

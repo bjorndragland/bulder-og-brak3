@@ -34,13 +34,11 @@
       fill="currentColor"
       stroke="none"
       stroke-linecap="round"
-      stroke-linejoin="round"      
+      stroke-linejoin="round"
     />
   </svg>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

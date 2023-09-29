@@ -6,16 +6,9 @@
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-    >
+    <g fill="none" stroke="currentColor" stroke-width="2">
       <g stroke-linejoin="round">
-        <path
-          d="m6 21 17 1.98-6.002-22.02h-1"
-          stroke-linecap="round"
-        />
+        <path d="m6 21 17 1.98-6.002-22.02h-1" stroke-linecap="round" />
         <path d="m23 22.98v-20.98l-6-1" />
       </g>
       <path d="m4 1 10 1.88e-4" />
@@ -35,8 +28,6 @@
   </svg>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>
