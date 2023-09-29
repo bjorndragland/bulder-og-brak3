@@ -74,4 +74,5 @@ export default interface State {
   tab: string;
   isLoading: boolean;
   imageUrl: string;
+  addSetDialog: boolean;
 }

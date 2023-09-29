@@ -41,6 +41,7 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     ],
     imageUrl: "null",
     tab: "tab2",
+    addSetDialog: true,
   }),
   getters: {},
   actions: {

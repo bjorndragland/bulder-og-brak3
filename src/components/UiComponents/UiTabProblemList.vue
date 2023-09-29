@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="non-scrollable">
-      <UiProblemCardAdd @clicked="addProblem" />
+      <UiProblemCardAddButton @clicked="addProblem" />
       <div class="row">
         <q-select
           class="col-10"
@@ -12,7 +12,7 @@
           behavior="menu"
           color="black"
         />
-        <q-btn class="q-ml-md" flat padding="xs" icon="filter_alt" />
+        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
@@ -36,7 +36,7 @@
 import { ref, computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 import UiProblemCard from "./UiProblemCard.vue";
-import UiProblemCardAdd from "./UiProblemCardAdd.vue";
+import UiProblemCardAddButton from "./UiProblemCardAddButton.vue";
 
 const svgMarkerStore = useSvgMarkerStore();
 const firebaseProblems = computed(() => {

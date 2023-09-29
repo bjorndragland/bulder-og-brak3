@@ -1,11 +1,30 @@
 <template>
-  <q-tabs v-model="svgMarkerStore.appState" inline-label no-caps dense stretch>
-    <q-tab name="info" icon="info" label="Info" />
-    <q-tab name="edit" icon="mode_edit" label="Endre" />
+  <q-tabs
+    v-model="svgMarkerStore.appState"
+    inline-label
+    no-caps
+    dense
+    stretch
+  >
+    <q-tab
+      name="info"
+      icon="info"
+      label="Info"
+    />
+    <q-tab
+      name="edit"
+      icon="mode_edit"
+      label="Endre"
+    />
   </q-tabs>
   <div>
     <div class="freePlace">
-      <q-btn padding="sm" fab color="black" @click="zoomInOut">
+      <q-btn
+        padding="sm"
+        fab
+        color="black"
+        @click="zoomInOut"
+      >
         <SvgIconZoomIn v-if="svgMarkerStore.zoomFactor == 100" />
         <SvgIconZoomOut v-else />
       </q-btn>
@@ -14,8 +33,14 @@
       <SvgCanvas class="q-mt-xs" />
     </div>
   </div>
-  <q-tab-panels v-model="svgMarkerStore.appState" animated>
-    <q-tab-panel name="info" class="q-px-none q-py-xs">
+  <q-tab-panels
+    v-model="svgMarkerStore.appState"
+    animated
+  >
+    <q-tab-panel
+      name="info"
+      class="q-px-none q-py-xs"
+    >
       <UiProblemCard
         :problemName="selectedProbFB.name"
         :problemGrade="selectedProbFB.grade"
@@ -29,13 +54,24 @@
       <!-- <UiProblemPrevNext /> -->
     </q-tab-panel>
 
-    <q-tab-panel name="edit" class="q-px-none q-py-xs">
-      <q-card flat class="my-card">
+    <q-tab-panel
+      name="edit"
+      class="q-px-none q-py-xs"
+    >
+      <q-card
+        flat
+        class="my-card"
+      >
         <UiMarkerEditor />
         <UiGradeSlider v-model="selectedProbFB.gradeNum" />
         <q-card-section class="q-pt-xs">
           <p class="q-mb-none q-mt-md">Problemnavn</p>
-          <q-input v-model="selectedProbFB.name" color="black" dense outlined />
+          <q-input
+            v-model="selectedProbFB.name"
+            color="black"
+            dense
+            outlined
+          />
 
           <p class="q-mb-none q-mt-md">Kreatør</p>
           <q-input
@@ -61,6 +97,48 @@
             outlined
           />
 
+
+          <p class="q-mb-none q-mt-md">Dato</p>
+          <q-input
+            dense
+            outlined
+            v-model="dateProblemCreate"
+            mask="date"
+            :rules="['date']"
+          >
+            <template v-slot:append>
+              <q-icon
+                name="event"
+                class="cursor-pointer"
+              >
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date
+                    v-model="dateProblemCreate"
+                    color="light-blue-9"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn
+                        v-close-popup
+                        label="Close"
+                        color="light-blue-9"
+                        flat
+                      />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+
+          <q-btn @click="dateProblemCreate = inputTodaysDate()">klikk for i dag</q-btn>
+
+
+
           <q-btn
             class="q-mb-none q-mt-md"
             color="red"
@@ -69,7 +147,11 @@
             @click="deleteCurrentProblem"
           />
 
-          <q-btn class="q-mb-none q-mt-md" color="black" label="avbryt" />
+          <q-btn
+            class="q-mb-none q-mt-md"
+            color="black"
+            label="avbryt"
+          />
 
           <q-btn
             class="q-mb-none q-mt-md"
@@ -85,7 +167,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 import SvgCanvas from "@/components/SvgComponents/SvgCanvas.vue";
 import UiProblemCard from "./UiProblemCard.vue";
@@ -95,8 +177,9 @@ import SvgIconZoomOut from "@/components/SvgComponents/SvgIconZoomOut.vue";
 import UiMarkerEditor from "./UiMarkerEditor.vue";
 import UiGradeSlider from "./UiGradeSlider.vue";
 // import UiProblemPrevNext from './UiProblemPrevNext.vue'
-
 const svgMarkerStore = useSvgMarkerStore();
+const dateProblemCreate = ref('2023/02/01')
+
 
 const zoomInOut = () => {
   if (svgMarkerStore.zoomFactor == 100) {
@@ -119,6 +202,30 @@ const deleteCurrentProblem = function () {
 const saveBackToFirebase = () => {
   svgMarkerStore.saveInfoBackToFirebase();
 };
+
+
+const inputTodaysDate = function () {
+  let curDate = new Date;
+  let inputYear = curDate.getFullYear();
+  let inputMonth = curDate.getMonth() + 1
+  let inputMonthString
+  let inputDay = curDate.getDate()
+  let inputDayString
+  if (inputMonth < 10) {
+    inputMonthString = `0${inputMonth}`;
+  } else {
+    inputMonthString = inputMonth.toString();
+  }
+  if (inputDay < 10) {
+    inputDayString = `0${inputDay}`;
+  } else {
+    inputDayString = inputDay.toString();
+  }
+  let fullInputDate = `${inputYear}/${inputMonthString}/${inputDayString}`
+  return fullInputDate
+}
+
+
 </script>
 
 <style scoped>
