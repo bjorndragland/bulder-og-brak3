@@ -43,7 +43,14 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     tab: "tab2",
     addSetDialog: true,
   }),
-  getters: {},
+  // getters: {
+  //   getHoldSizeOfSelected: (state: State) => {
+  //     return state.problemHoldsFB[state.selectedHoldFBId].size 
+  //   },
+  //   getHoldTypeOfSelected: (state: State) => {
+  //     return state.problemHoldsFB[state.selectedHoldFBId].
+  //   }
+  // },
   actions: {
     async fetchImageUrl(imagePath: string) {
       const storage = getStorage();

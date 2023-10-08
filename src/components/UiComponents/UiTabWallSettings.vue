@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="non-scrollable">
-      <UiSetCardAddButton />
+      <UiSetCardAddButton @clicked="addSet" />
       <div class="row">
         <q-select
           class="col-10"
@@ -12,7 +12,11 @@
           behavior="menu"
           color="black"
         />
-        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
+        <q-btn
+          class="q-ml-md"
+          padding="xs"
+          icon="filter_alt"
+        />
       </div>
     </div>
     <div class="scrollable-list">
@@ -56,6 +60,12 @@ const options = ["Nyeste først", "Grad stigende", "Grad synkende"];
 const firebaseSets = computed(() => {
   return svgMarkerStore.setsFB;
 });
+
+const addSet = function () {
+  svgMarkerStore.addSetDialog = true
+  console.log("suck it")
+}
+
 </script>
 
 <style scoped>

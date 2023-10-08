@@ -1,5 +1,8 @@
 <template>
-  <q-card flat class="my-card bg-grey-3">
+  <q-card
+    flat
+    class="my-card bg-grey-3"
+  >
     <!-- <p class="text-caption q-px-xs q-my-xs q-pt-xs q-mb-none ">Takmarkør</p> -->
     <!-- <p class="text-caption q-px-sm q-my-xs q-pt-xs q-mb-none ">Finjustering</p> -->
     <q-card-section>
@@ -42,9 +45,12 @@
           @click="deleteSelected"
         />
       </div>
+      <!-- v-model="sizeOfHolds" -->
+      <!-- v-model="sizeModel" -->
 
       <q-slider
         v-model="sizeModel"
+        
         class="q-my-md"
         color="black"
         markers
@@ -53,9 +59,13 @@
         :min="0"
         :max="4"
         @change="selectSize"
+        
       />
-
-      <q-btn-group push class="q-my-sm">
+      <!-- @change="selectSize" -->
+      <q-btn-group
+        push
+        class="q-my-sm"
+      >
         <q-btn
           v-for="color in colors"
           :key="color.label"
@@ -69,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 const svgMarkerStore = useSvgMarkerStore();
 
@@ -79,6 +89,16 @@ const objMarkerLabel = { 0: "XS", 1: "S", 2: "M", 3: "L", 4: "XL" };
 const deleteSelected = () => {
   svgMarkerStore.deleteSelectedHold();
 };
+
+// const sizeOfHolds = computed({
+//   get() {
+//     return svgMarkerStore.getHoldSizeOfSelected
+//   },
+//   set(value) {
+//     svgMarkerStore.changeHoldSizeOfSelected(value)
+//   }
+// })
+
 
 const colors = [
   { color: "light-green-6", label: "start", holdType: "start" },
