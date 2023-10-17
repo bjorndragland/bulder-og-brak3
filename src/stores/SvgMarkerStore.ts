@@ -1,11 +1,11 @@
 // import type HoldMarker from '../types/HoldMarker'
 import type State from "../types/State";
+import type HoldMarkerFB from "../types/HoldMarkerFB";
 
 import { defineStore } from "pinia";
 import db from "../firebase/init";
 import { get, set, ref as dbRef } from "firebase/database";
 import { getAuth } from "firebase/auth";
-// import { useUserStore } from "./UserStore"
 import {
   getStorage,
   ref as storageRef,
@@ -15,8 +15,9 @@ import {
 export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
   state: (): State => ({
     lastSize: "S",
+    lastSizeNum: 1,
     lastType: "middle",
-    selectedHoldId: "",
+    lastTypeNum: 1,
     selectedHoldFBId: 0,
     appState: "info",
     currentSet: "s10001",
@@ -43,14 +44,22 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     tab: "tab2",
     addSetDialog: true,
   }),
-  // getters: {
-  //   getHoldSizeOfSelected: (state: State) => {
-  //     return state.problemHoldsFB[state.selectedHoldFBId].size 
-  //   },
-  //   getHoldTypeOfSelected: (state: State) => {
-  //     return state.problemHoldsFB[state.selectedHoldFBId].
-  //   }
-  // },
+  getters: {
+    getHoldSizeOfSelected: (state: State) => {
+      if (state.problemHoldsFB[state.selectedHoldFBId]) {
+        return state.problemHoldsFB[state.selectedHoldFBId].sizeNum;
+      } else {
+        return 0;
+      }
+    },
+    getHoldTypeOfSelected: (state: State) => {
+      if (state.problemHoldsFB[state.selectedHoldFBId]) {
+        return state.problemHoldsFB[state.selectedHoldFBId].typeNum;
+      } else {
+        return 0;
+      }
+    },
+  },
   actions: {
     async fetchImageUrl(imagePath: string) {
       const storage = getStorage();
@@ -82,6 +91,9 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         // hent holds fra første problem
         const firstProblemId = Object.keys(snapshot.val())[0];
         this.currentProblem = firstProblemId;
+        this.selectedHoldFBId = Number(
+          Object.keys(this.problemsFB[firstProblemId].problemHolds)[0],
+        );
         this.isLoading = false;
         this.fetchProblemHoldsFromObject();
       } else {
@@ -125,6 +137,7 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     createNewProblem: function () {
       const auth = getAuth();
       let userIdFB: string;
+
       if (auth.currentUser) {
         userIdFB = auth.currentUser.uid;
       } else {
@@ -135,23 +148,66 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         description: "",
         grade: "5",
         gradeNum: 4,
-        createdAt: "i dag",
+        createdAt: this.inputTodaysDate(),
         setter: "Bjørn",
         image: "",
         set: "334",
-        updatedAt: "i dag",
+        updatedAt: this.inputTodaysDate(),
         userId: userIdFB,
-        problemHolds: {},
+        problemHolds: {} as Record<string, HoldMarkerFB>,
       };
+
+      const tempHoldSpecArray = [
+        { sizeNum: 3, typeNum: 2 },
+        { sizeNum: 2, typeNum: 1 },
+        { sizeNum: 2, typeNum: 0 },
+        { sizeNum: 1, typeNum: 3 },
+      ];
+
+      for (let i = 0; i < 4; i++) {
+        let randomId = Math.floor(Math.random() * 10000000).toString();
+        newProbObject.problemHolds[randomId] = {
+          posX: 300,
+          posY: 300 + i * 180,
+          size: "XS",
+          sizeNum: tempHoldSpecArray[i].sizeNum,
+          // sizeNum: 1,
+          type: "foot",
+          typeNum: tempHoldSpecArray[i].typeNum,
+          // typeNum: 1,
+        };
+      }
 
       const idRandom = Math.round(Math.random() * 1000000000).toString();
       console.log(idRandom);
 
       this.problemsFB[idRandom] = newProbObject;
       this.currentProblem = idRandom;
+      this.fetchProblemHoldsFromObject();
 
       this.appState = "edit";
       this.tab = "tab3";
+    },
+
+    inputTodaysDate: function () {
+      let curDate = new Date();
+      let inputYear = curDate.getFullYear();
+      let inputMonth = curDate.getMonth() + 1;
+      let inputMonthString;
+      let inputDay = curDate.getDate();
+      let inputDayString;
+      if (inputMonth < 10) {
+        inputMonthString = `0${inputMonth}`;
+      } else {
+        inputMonthString = inputMonth.toString();
+      }
+      if (inputDay < 10) {
+        inputDayString = `0${inputDay}`;
+      } else {
+        inputDayString = inputDay.toString();
+      }
+      let fullInputDate = `${inputDayString}/${inputMonthString}/${inputYear}`;
+      return fullInputDate;
     },
 
     moveMarkerFBX: function (id: number, valueX: number) {
@@ -177,16 +233,25 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       this.problemHoldsFB[this.selectedHoldFBId].posY += 3;
     },
 
-    changeHoldSizeOfSelected: function (holdSizeNum: number) {
-      const result = this.holdSizeDefaults.find(({ id }) => id === holdSizeNum);
-      this.problemHoldsFB[this.selectedHoldFBId].size = result!.name;
-      this.lastSize = result!.name;
+    setHoldSizeOfSelected: function (value: number) {
+      this.problemHoldsFB[this.selectedHoldFBId].sizeNum = value;
+      this.lastSizeNum = value;
     },
 
-    changeHoldTypeOfSelected: function (holdType: string) {
-      this.problemHoldsFB[this.selectedHoldFBId].type = holdType;
-      this.lastType = holdType;
+    // changeHoldSizeOfSelected: function (holdSizeNum: number) {
+    //   const result = this.holdSizeDefaults.find(({ id }) => id === holdSizeNum);
+    //   this.problemHoldsFB[this.selectedHoldFBId].size = result!.name;
+    //   this.lastSize = result!.name;
+    // },
+
+    setHoldTypeOfSelected: function (value: number) {
+      this.problemHoldsFB[this.selectedHoldFBId].typeNum = value;
+      this.lastTypeNum = value;
     },
+    // changeHoldTypeOfSelected: function (holdType: string) {
+    //   this.problemHoldsFB[this.selectedHoldFBId].type = holdType;
+    //   this.lastType = holdType;
+    // },
 
     deleteSelectedHold: function () {
       delete this.problemHoldsFB[this.selectedHoldFBId];

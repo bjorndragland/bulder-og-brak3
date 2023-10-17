@@ -12,11 +12,7 @@
           behavior="menu"
           color="black"
         />
-        <q-btn
-          class="q-ml-md"
-          padding="xs"
-          icon="filter_alt"
-        />
+        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
@@ -62,10 +58,8 @@ const firebaseSets = computed(() => {
 });
 
 const addSet = function () {
-  svgMarkerStore.addSetDialog = true
-  console.log("suck it")
-}
-
+  svgMarkerStore.addSetDialog = true;
+};
 </script>
 
 <style scoped>

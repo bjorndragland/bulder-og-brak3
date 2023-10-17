@@ -32,6 +32,16 @@
     <div class="fitIt">
       <SvgCanvas class="q-mt-xs" />
     </div>
+    <div
+      v-if="svgMarkerStore.appState == 'edit'"
+      class="bg-grey-9 text-white instruction-text"
+    >
+      <q-icon
+        name="info"
+        class="q-ml-sm"
+      />
+      Klikk på bildet for å legge til, eller dra for å flytte på markør
+    </div>
   </div>
   <q-tab-panels
     v-model="svgMarkerStore.appState"
@@ -89,55 +99,63 @@
             outlined
           />
 
-          <p class="q-mb-none q-mt-md">Dato</p>
+          <!-- <p class="q-mb-none q-mt-md">Dato</p>
           <q-input
             v-model="selectedProbFB.createdAt"
             color="black"
             dense
             outlined
-          />
-
+          /> -->
 
           <p class="q-mb-none q-mt-md">Dato</p>
-          <q-input
-            dense
-            outlined
-            v-model="dateProblemCreate"
-            mask="date"
-            :rules="['date']"
-          >
-            <template v-slot:append>
-              <q-icon
-                name="event"
-                class="cursor-pointer"
-              >
-                <q-popup-proxy
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
+          <div class="row">
+
+            <q-input
+            class="q-pr-sm"
+              dense
+              outlined
+              hide-bottom-space
+              v-model="selectedProbFB.createdAt"
+              :rules="[dateRule]"
+              mask="##/##/####"
+            >
+              <template v-slot:append>
+                <q-icon
+                  name="event"
+                  class="cursor-pointer"
                 >
-                  <q-date
-                    v-model="dateProblemCreate"
-                    color="light-blue-9"
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
                   >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        label="Close"
-                        color="light-blue-9"
-                        flat
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+                  <!-- v-model="dateProblemCreate" -->
+                    <q-date
+                      v-model=selectedProbFB.createdAt
+                      color="light-blue-9"
+                      mask="DD/MM/YYYY"
+                    >
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="light-blue-9"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+            <q-btn
+              class="q-px-xs q-mr-xs"
+              padding="sm"
+              @click="dateProblemCreate = svgMarkerStore.inputTodaysDate()"
+            >i dag</q-btn>
+          </div>
 
-
-          <q-btn @click="dateProblemCreate = inputTodaysDate()">klikk for i dag</q-btn>
-
-
+          <!-- <q-btn @click="dateProblemCreate = inputTodaysDate()">i dag</q-btn> -->
 
           <q-btn
             class="q-mb-none q-mt-md"
@@ -178,8 +196,12 @@ import UiMarkerEditor from "./UiMarkerEditor.vue";
 import UiGradeSlider from "./UiGradeSlider.vue";
 // import UiProblemPrevNext from './UiProblemPrevNext.vue'
 const svgMarkerStore = useSvgMarkerStore();
-const dateProblemCreate = ref('2023/02/01')
+const dateProblemCreate = ref("01/02/2023");
 
+const dateRule = (val: string) => {
+  const pattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+  return pattern.test(val) || 'Date format must be DD/MM/YYYY';
+};
 
 const zoomInOut = () => {
   if (svgMarkerStore.zoomFactor == 100) {
@@ -203,29 +225,6 @@ const saveBackToFirebase = () => {
   svgMarkerStore.saveInfoBackToFirebase();
 };
 
-
-const inputTodaysDate = function () {
-  let curDate = new Date;
-  let inputYear = curDate.getFullYear();
-  let inputMonth = curDate.getMonth() + 1
-  let inputMonthString
-  let inputDay = curDate.getDate()
-  let inputDayString
-  if (inputMonth < 10) {
-    inputMonthString = `0${inputMonth}`;
-  } else {
-    inputMonthString = inputMonth.toString();
-  }
-  if (inputDay < 10) {
-    inputDayString = `0${inputDay}`;
-  } else {
-    inputDayString = inputDay.toString();
-  }
-  let fullInputDate = `${inputYear}/${inputMonthString}/${inputDayString}`
-  return fullInputDate
-}
-
-
 </script>
 
 <style scoped>
@@ -238,5 +237,9 @@ const inputTodaysDate = function () {
   position: absolute;
   top: 50px;
   left: 22px;
+}
+
+.instruction-text {
+  font-size: 0.8em;
 }
 </style>

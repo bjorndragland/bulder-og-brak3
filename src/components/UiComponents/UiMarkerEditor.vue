@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    flat
-    class="my-card bg-grey-3"
-  >
+  <q-card flat class="my-card bg-grey-3">
     <!-- <p class="text-caption q-px-xs q-my-xs q-pt-xs q-mb-none ">Takmarkør</p> -->
     <!-- <p class="text-caption q-px-sm q-my-xs q-pt-xs q-mb-none ">Finjustering</p> -->
     <q-card-section>
@@ -48,72 +45,129 @@
       <!-- v-model="sizeOfHolds" -->
       <!-- v-model="sizeModel" -->
 
-      <q-slider
-        v-model="sizeModel"
-        
+      <q-btn-toggle
         class="q-my-md"
+        v-model="typeOfHolds"
+        toggle-color="grey-9"
+        :ripple="false"
+        :options="[
+          { value: 0, slot: 'one' },
+          { value: 1, slot: 'two' },
+          { value: 2, slot: 'three' },
+          { value: 3, slot: 'four' },
+        ]"
+      >
+        <template v-slot:one>
+          <div class="hold-start hold-common"></div>
+          <br />
+          <div class="text-center">Start</div>
+        </template>
+        <template v-slot:two>
+          <div class="hold-midt hold-common"></div>
+          <br />
+          <div class="text-center">Midt</div>
+        </template>
+
+        <template v-slot:three>
+          <div class="hold-topp hold-common"></div>
+          <br />
+          <div class="text-center">Topp</div>
+        </template>
+        <template v-slot:four>
+          <div class="hold-fot hold-common"></div>
+          <br />
+          <div class="text-center">Fot</div>
+        </template>
+      </q-btn-toggle>
+
+      <q-slider
+        v-model="sizeOfHolds"
+        class="q-my-md q-px-sm"
         color="black"
         markers
         :marker-labels="objMarkerLabel"
         snap
         :min="0"
         :max="4"
-        @change="selectSize"
-        
       />
-      <!-- @change="selectSize" -->
-      <q-btn-group
-        push
-        class="q-my-sm"
-      >
-        <q-btn
-          v-for="color in colors"
-          :key="color.label"
-          :label="color.label"
-          :color="color.color"
-          @click="selectColor(color.holdType)"
-        />
-      </q-btn-group>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 const svgMarkerStore = useSvgMarkerStore();
 
-const sizeModel = ref(0);
+// const model2 = ref(0);
+// const sizeModel = ref(0);
 const objMarkerLabel = { 0: "XS", 1: "S", 2: "M", 3: "L", 4: "XL" };
 
 const deleteSelected = () => {
   svgMarkerStore.deleteSelectedHold();
 };
 
-// const sizeOfHolds = computed({
-//   get() {
-//     return svgMarkerStore.getHoldSizeOfSelected
-//   },
-//   set(value) {
-//     svgMarkerStore.changeHoldSizeOfSelected(value)
-//   }
-// })
+const sizeOfHolds = computed({
+  get() {
+    return svgMarkerStore.getHoldSizeOfSelected;
+  },
+  set(value) {
+    svgMarkerStore.setHoldSizeOfSelected(value);
+  },
+});
 
+const typeOfHolds = computed({
+  get() {
+    return svgMarkerStore.getHoldTypeOfSelected;
+  },
+  set(value) {
+    svgMarkerStore.setHoldTypeOfSelected(value);
+  },
+});
 
-const colors = [
-  { color: "light-green-6", label: "start", holdType: "start" },
-  { color: "light-blue-7", label: "midt", holdType: "middle" },
-  { color: "purple-5", label: "topp", holdType: "end" },
-  { color: "orange-7", label: "fot", holdType: "foot" },
-];
+// const colors = [
+//   { color: "light-green-6", label: "start", holdType: "start" },
+//   { color: "light-blue-7", label: "midt", holdType: "middle" },
+//   { color: "purple-5", label: "topp", holdType: "end" },
+//   { color: "orange-7", label: "fot", holdType: "foot" },
+// ];
 
-const selectSize = () => {
-  svgMarkerStore.changeHoldSizeOfSelected(sizeModel.value);
-};
+// const selectSize = () => {
+//   svgMarkerStore.changeHoldSizeOfSelected(sizeModel.value);
+// };
 
-const selectColor = (holdType: string) => {
-  svgMarkerStore.changeHoldTypeOfSelected(holdType);
-};
+// const selectColor = (holdType: string) => {
+//   svgMarkerStore.changeHoldTypeOfSelected(holdType);
+// };
 </script>
 
-<style scoped></style>
+<style scoped>
+.move-left {
+  transform: translate(-5px 0px);
+}
+
+.hold-common {
+  margin-left: 6px;
+  margin-right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.hold-start {
+  background-color: #8bc34a;
+}
+
+.hold-midt {
+  background-color: #039be5;
+}
+
+.hold-topp {
+  background-color: #ab47bc;
+}
+
+.hold-fot {
+  background-color: #fb8c00;
+}
+</style>

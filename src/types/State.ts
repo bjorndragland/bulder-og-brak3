@@ -24,7 +24,9 @@ interface ProblemHold {
   posX: number;
   posY: number;
   size: string;
+  sizeNum: number;
   type: string;
+  typeNum: number;
 }
 
 interface ProblemHolds {
@@ -54,9 +56,11 @@ interface HoldSizeDefault {
 
 export default interface State {
   lastSize: string;
+  lastSizeNum: number;
   lastType: string;
+  lastTypeNum: number;
   appState: string;
-  selectedHoldId: string;
+  // selectedHoldId: string;
   selectedHoldFBId: number;
   problemsLocal: Problems;
   problemsFB: Problems;
