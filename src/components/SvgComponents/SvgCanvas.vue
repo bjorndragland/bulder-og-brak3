@@ -43,13 +43,18 @@
       @mouseup="newMarker($event)"
     />
 
-    <g v-for="(value, key) in objOfHoldsFB" :key="key">
+    <g
+      v-for="(value, key) in objOfHoldsFB"
+      :key="key"
+    >
       <SvgHoldMarker
         :markerX="value.posX"
         :markerY="value.posY"
         :markerSize="value.size"
-        :markerId="key.toString()"
+        :markerSizeNum="value.sizeNum"
+        :markerId="Number(key)"
         :markerType="value.type"
+        :markerTypeNum="value.typeNum"
         :markerThumb="false"
       />
     </g>
@@ -97,16 +102,17 @@ const newMarker = function (e: MouseEvent) {
     let svgP: SVGPoint = pt.matrixTransform(
       svgRect.parentElement.getScreenCTM().inverse(),
     );
-    let randomId = Math.floor(Math.random() * 10000000).toString();
+    // let randomId = Math.floor(Math.random() * 10000000).toString();
     let randomNumberId = Math.floor(Math.random() * 10000000);
     let newHoldMarkerFB: HoldMarkerFB = {
       posX: Math.round(svgP.x),
       posY: Math.round(svgP.y),
       size: svgMarkerStore.lastSize,
+      sizeNum: svgMarkerStore.lastSizeNum,
       type: svgMarkerStore.lastType as HoldTypeTerm,
+      typeNum: svgMarkerStore.lastTypeNum,
     };
     svgMarkerStore.problemHoldsFB[randomNumberId] = newHoldMarkerFB;
-    svgMarkerStore.selectedHoldId = randomId;
     svgMarkerStore.selectedHoldFBId = randomNumberId;
   }
 };
@@ -124,7 +130,6 @@ const startDragM = function (e: MouseEvent) {
       offsetX.value = offset.x;
       offsetY.value = offset.y;
       dragging.value = true;
-      svgMarkerStore.selectedHoldId = currentSel.value;
       svgMarkerStore.selectedHoldFBId = Number(currentSel.value);
     }
   }
@@ -143,7 +148,6 @@ const startDragT = function (e: TouchEvent) {
       offsetX.value = offset.x;
       offsetY.value = offset.y;
       dragging.value = true;
-      svgMarkerStore.selectedHoldId = currentSel.value;
       svgMarkerStore.selectedHoldFBId = Number(currentSel.value);
     }
   }
@@ -218,6 +222,10 @@ const objOfHoldsFB = computed(() => {
 </script>
 
 <style scoped>
+.svg-edit {
+  cursor: pointer;
+}
+
 .svg-zoom1 {
   width: 100%;
   height: 100%;

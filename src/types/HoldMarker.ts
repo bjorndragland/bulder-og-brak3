@@ -1,5 +1,5 @@
 export default interface HoldMarker {
-  markerId: string;
+  markerId: number;
   markerX: number;
   markerY: number;
   markerSize: string;

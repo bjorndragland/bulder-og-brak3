@@ -23,32 +23,17 @@
       <q-card-section>
         <p class="q-mb-none q-mt-md">Last opp bilde</p>
 
-        <q-file
-          v-model="file"
-          dense
-          outlined
-        >
+        <q-file v-model="file" dense outlined>
           <template v-slot:append>
             <q-icon name="image" />
           </template>
         </q-file>
 
-
-
         <p class="q-mb-none q-mt-md">Beskrivelse</p>
-        <q-input
-          v-model="desc"
-          color="black"
-          dense
-          outlined
-        />
+        <q-input v-model="desc" color="black" dense outlined />
 
         <p class="q-mb-none q-mt-md">Aktiv</p>
-        <q-checkbox
-          keep-color
-          v-model="val"
-          color="green-10"
-        />
+        <q-checkbox keep-color v-model="val" color="green-10" />
 
         <p class="q-mb-none q-mt-md">Startdato</p>
         <q-input
@@ -59,19 +44,13 @@
           :rules="['date']"
         >
           <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer"
-            >
+            <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy
                 cover
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-date
-                  v-model="dateStarted"
-                  color="light-blue-9"
-                >
+                <q-date v-model="dateStarted" color="light-blue-9">
                   <div class="row items-center justify-end">
                     <q-btn
                       v-close-popup
@@ -95,19 +74,13 @@
           :rules="['date']"
         >
           <template v-slot:append>
-            <q-icon
-              name="event"
-              class="cursor-pointer"
-            >
+            <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy
                 cover
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-date
-                  v-model="dateEnded"
-                  color="light-blue-9"
-                >
+                <q-date v-model="dateEnded" color="light-blue-9">
                   <div class="row items-center justify-end">
                     <q-btn
                       v-close-popup
@@ -123,7 +96,6 @@
         </q-input>
 
         <q-btn @click="dateStarted = inputTodaysDate()">klikk for i dag</q-btn>
-
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -134,19 +106,18 @@ import { ref } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 const svgMarkerStore = useSvgMarkerStore();
 const file = ref(null);
-const desc = ref("halloen")
-const val = ref(false)
-const dateStarted = ref('2023/02/01')
-const dateEnded = ref('2023/07/01')
-
+const desc = ref("halloen");
+const val = ref(false);
+const dateStarted = ref("2023/02/01");
+const dateEnded = ref("2023/07/01");
 
 const inputTodaysDate = function () {
-  let curDate = new Date;
+  let curDate = new Date();
   let inputYear = curDate.getFullYear();
-  let inputMonth = curDate.getMonth() + 1
-  let inputMonthString
-  let inputDay = curDate.getDate()
-  let inputDayString
+  let inputMonth = curDate.getMonth() + 1;
+  let inputMonthString;
+  let inputDay = curDate.getDate();
+  let inputDayString;
   if (inputMonth < 10) {
     inputMonthString = `0${inputMonth}`;
   } else {
@@ -157,10 +128,9 @@ const inputTodaysDate = function () {
   } else {
     inputDayString = inputDay.toString();
   }
-  let fullInputDate = `${inputYear}/${inputMonthString}/${inputDayString}`
-  return fullInputDate
-}
-
+  let fullInputDate = `${inputYear}/${inputMonthString}/${inputDayString}`;
+  return fullInputDate;
+};
 </script>
 
 <style scoped></style>

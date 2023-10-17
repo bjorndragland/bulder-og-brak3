@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="non-scrollable">
-      <UiSetCardAddButton />
+      <UiSetCardAddButton @clicked="addSet" />
       <div class="row">
         <q-select
           class="col-10"
@@ -56,6 +56,10 @@ const options = ["Nyeste først", "Grad stigende", "Grad synkende"];
 const firebaseSets = computed(() => {
   return svgMarkerStore.setsFB;
 });
+
+const addSet = function () {
+  svgMarkerStore.addSetDialog = true;
+};
 </script>
 
 <style scoped>

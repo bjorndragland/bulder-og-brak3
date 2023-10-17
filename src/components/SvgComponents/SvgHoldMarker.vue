@@ -1,7 +1,7 @@
 <template>
   <g :transform-origin="originString" :transform="scaleString">
     <circle
-      :id="props.markerId"
+      :id="props.markerId.toString()"
       class="draggableC"
       :cx="props.markerX"
       :cy="props.markerY"
@@ -14,7 +14,7 @@
     />
 
     <circle
-      :id="props.markerId"
+      :id="props.markerId.toString()"
       class="draggableC"
       :cx="props.markerX"
       :cy="props.markerY"
@@ -149,7 +149,7 @@ const scaleString = computed(() => {
 const props = defineProps({
   markerId: {
     required: true,
-    type: String,
+    type: Number,
   },
   markerX: {
     required: true,
@@ -163,9 +163,17 @@ const props = defineProps({
     required: true,
     type: String,
   },
+  markerSizeNum: {
+    required: true,
+    type: Number,
+  },
   markerType: {
     required: true,
     type: String,
+  },
+  markerTypeNum: {
+    required: true,
+    type: Number,
   },
   markerThumb: {
     required: true,
@@ -183,15 +191,15 @@ const showFill = computed(() => {
 
 const sizeToRadius = computed(() => {
   let theRadius: number = 10;
-  if (props.markerSize === "XS") {
+  if (props.markerSizeNum === 0) {
     theRadius = 10;
-  } else if (props.markerSize === "S") {
+  } else if (props.markerSizeNum === 1) {
     theRadius = 13;
-  } else if (props.markerSize === "M") {
+  } else if (props.markerSizeNum === 2) {
     theRadius = 16;
-  } else if (props.markerSize === "L") {
+  } else if (props.markerSizeNum === 3) {
     theRadius = 21;
-  } else if (props.markerSize === "XL") {
+  } else if (props.markerSizeNum === 4) {
     theRadius = 26;
   }
   return theRadius;
@@ -199,13 +207,13 @@ const sizeToRadius = computed(() => {
 
 const typeToColor = computed(() => {
   let theColor: string = "#039be5";
-  if (props.markerType === "start") {
+  if (props.markerTypeNum === 0) {
     theColor = "#8bc34a";
-  } else if (props.markerType === "middle") {
+  } else if (props.markerTypeNum === 1) {
     theColor = "#039be5";
-  } else if (props.markerType === "end") {
+  } else if (props.markerTypeNum === 2) {
     theColor = "#ab47bc";
-  } else if (props.markerType === "foot") {
+  } else if (props.markerTypeNum === 3) {
     theColor = "#fb8c00";
   }
   return theColor;
@@ -213,7 +221,7 @@ const typeToColor = computed(() => {
 
 const holdIsSelected = computed(() => {
   // debugger;
-  if (props.markerId === svgMarkerStore.selectedHoldId) {
+  if (props.markerId === svgMarkerStore.selectedHoldFBId) {
     return true;
   } else {
     return false;
