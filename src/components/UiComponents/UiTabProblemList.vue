@@ -19,6 +19,7 @@
       <UiProblemCard
         v-for="(value, key) in firebaseProblems"
         :key="key"
+        :problemId="key.toString()"
         :problemName="value.name"
         :problemGrade="value.grade"
         :problemGradeNum="value.gradeNum"
@@ -26,7 +27,8 @@
         :problemDescription="value.description"
         :problemCreator="value.setter"
         :showDetails="false"
-        @click="pickProblemHolds(key)"
+        :currentProblem="svgMarkerStore.currentProblem"
+        @click="pickProblem(key.toString())"
       />
     </div>
   </div>
@@ -47,16 +49,18 @@ const model = ref("Nyeste først");
 
 const options = ["Nyeste først", "Grad stigende", "Grad synkende"];
 
-const pickProblemHolds = (key: number | string) => {
-  // readHoldsFromFirebase(key);
+const pickProblem = (key: string) => {
   svgMarkerStore.currentProblem = key;
   svgMarkerStore.tab = "tab3";
-  readHoldsFromFirebase();
+  // select first hold of problem
+  svgMarkerStore.selectedHoldFBId = Object.keys(
+    svgMarkerStore.problemsFB[key].problemHolds,
+  )[0];
 };
 
-const readHoldsFromFirebase = async () => {
-  svgMarkerStore.fetchProblemHoldsFromObject();
-};
+// const readHoldsFromFirebase = async () => {
+//   svgMarkerStore.fetchProblemHoldsFromObject();
+// };
 
 const addProblem = function () {
   svgMarkerStore.createNewProblem();

@@ -1,8 +1,8 @@
 export default interface HoldMarkerFB {
   posX: number;
   posY: number;
-  size: string;
+  // size: string;
   sizeNum: number;
-  type: string;
+  // type: string;
   typeNum: number;
 }

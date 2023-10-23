@@ -1,3 +1,5 @@
+import type WallSets from "./WallSets";
+
 interface Problem {
   name: string;
   description: string;
@@ -20,38 +22,19 @@ interface ProblemSortOrder {
   problemId: string;
 }
 
+interface setImageUrls {
+  [key: string]: string;
+}
+
 interface ProblemHold {
   posX: number;
   posY: number;
-  size: string;
   sizeNum: number;
-  type: string;
   typeNum: number;
 }
 
 interface ProblemHolds {
   [key: string]: ProblemHold;
-}
-
-interface WallSet {
-  active: boolean;
-  createdAt: string;
-  description: string;
-  endedAt: string;
-  image: string;
-  imageSize: object;
-  name: string;
-  updatedAt: string;
-}
-
-interface WallSets {
-  [key: string]: WallSet;
-}
-
-interface HoldSizeDefault {
-  id: number;
-  name: string;
-  radius: number;
 }
 
 export default interface State {
@@ -60,23 +43,23 @@ export default interface State {
   lastType: string;
   lastTypeNum: number;
   appState: string;
-  // selectedHoldId: string;
-  selectedHoldFBId: number;
+  selectedHoldFBId: string;
   problemsLocal: Problems;
   problemsFB: Problems;
   newProblem: Problems;
   problemHoldsFB: ProblemHolds;
   setsFB: WallSets;
   problemSortOrder: ProblemSortOrder[];
-  newProblemHolds: ProblemHolds;
-  holdSizeDefaults: HoldSizeDefault[];
   currentSet: string;
-  currentProblem: number | string;
+  showSet: string;
+  currentProblem: string;
   wallWidth: number;
   markerScale: number;
   zoomFactor: number;
   tab: string;
   isLoading: boolean;
-  imageUrl: string;
+  newSetImageUrl: string;
+  setImageUrls: setImageUrls;
+  problemImageUrl: string;
   addSetDialog: boolean;
 }

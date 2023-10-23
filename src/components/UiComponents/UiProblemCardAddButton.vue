@@ -3,7 +3,7 @@
   <q-card bordered class="my-card q-my-md" @click="onClick">
     <q-card-section class="q-py-sm row bg-grey-3">
       <div class="col-2">
-        <q-icon color="green-10" name="add_circle" size="32px" />
+        <q-icon color="blue-8" name="add_circle" size="32px" />
       </div>
       <div class="col-10 text-subtitle2 q-pt-xs text-weight-bold">
         Legg til nytt problem

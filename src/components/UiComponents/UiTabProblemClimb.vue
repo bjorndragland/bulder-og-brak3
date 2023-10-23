@@ -1,30 +1,11 @@
 <template>
-  <q-tabs
-    v-model="svgMarkerStore.appState"
-    inline-label
-    no-caps
-    dense
-    stretch
-  >
-    <q-tab
-      name="info"
-      icon="info"
-      label="Info"
-    />
-    <q-tab
-      name="edit"
-      icon="mode_edit"
-      label="Endre"
-    />
+  <q-tabs v-model="svgMarkerStore.appState" inline-label no-caps dense stretch>
+    <q-tab name="info" icon="info" label="Info" />
+    <q-tab name="edit" icon="mode_edit" label="Endre" />
   </q-tabs>
   <div>
     <div class="freePlace">
-      <q-btn
-        padding="sm"
-        fab
-        color="black"
-        @click="zoomInOut"
-      >
+      <q-btn padding="sm" fab color="black" @click="zoomInOut">
         <SvgIconZoomIn v-if="svgMarkerStore.zoomFactor == 100" />
         <SvgIconZoomOut v-else />
       </q-btn>
@@ -36,22 +17,14 @@
       v-if="svgMarkerStore.appState == 'edit'"
       class="bg-grey-9 text-white instruction-text"
     >
-      <q-icon
-        name="info"
-        class="q-ml-sm"
-      />
+      <q-icon name="info" class="q-ml-sm" />
       Klikk på bildet for å legge til, eller dra for å flytte på markør
     </div>
   </div>
-  <q-tab-panels
-    v-model="svgMarkerStore.appState"
-    animated
-  >
-    <q-tab-panel
-      name="info"
-      class="q-px-none q-py-xs"
-    >
+  <q-tab-panels v-model="svgMarkerStore.appState" animated>
+    <q-tab-panel name="info" class="q-px-none q-py-xs">
       <UiProblemCard
+        :problemId="svgMarkerStore.currentProblem"
         :problemName="selectedProbFB.name"
         :problemGrade="selectedProbFB.grade"
         :problemGradeNum="selectedProbFB.gradeNum"
@@ -59,29 +32,19 @@
         :problemDescription="selectedProbFB.description"
         :problemCreator="selectedProbFB.setter"
         :showDetails="true"
+        :currentProblem="svgMarkerStore.currentProblem"
       />
 
-      <!-- <UiProblemPrevNext /> -->
+      <UiProblemPrevNext />
     </q-tab-panel>
 
-    <q-tab-panel
-      name="edit"
-      class="q-px-none q-py-xs"
-    >
-      <q-card
-        flat
-        class="my-card"
-      >
+    <q-tab-panel name="edit" class="q-px-none q-py-xs">
+      <q-card flat class="my-card">
         <UiMarkerEditor />
         <UiGradeSlider v-model="selectedProbFB.gradeNum" />
         <q-card-section class="q-pt-xs">
           <p class="q-mb-none q-mt-md">Problemnavn</p>
-          <q-input
-            v-model="selectedProbFB.name"
-            color="black"
-            dense
-            outlined
-          />
+          <q-input v-model="selectedProbFB.name" color="black" dense outlined />
 
           <p class="q-mb-none q-mt-md">Kreatør</p>
           <q-input
@@ -99,19 +62,10 @@
             outlined
           />
 
-          <!-- <p class="q-mb-none q-mt-md">Dato</p>
-          <q-input
-            v-model="selectedProbFB.createdAt"
-            color="black"
-            dense
-            outlined
-          /> -->
-
           <p class="q-mb-none q-mt-md">Dato</p>
           <div class="row">
-
             <q-input
-            class="q-pr-sm"
+              class="q-pr-sm"
               dense
               outlined
               hide-bottom-space
@@ -120,18 +74,15 @@
               mask="##/##/####"
             >
               <template v-slot:append>
-                <q-icon
-                  name="event"
-                  class="cursor-pointer"
-                >
+                <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy
                     cover
                     transition-show="scale"
                     transition-hide="scale"
                   >
-                  <!-- v-model="dateProblemCreate" -->
+                    <!-- v-model="dateProblemCreate" -->
                     <q-date
-                      v-model=selectedProbFB.createdAt
+                      v-model="selectedProbFB.createdAt"
                       color="light-blue-9"
                       mask="DD/MM/YYYY"
                     >
@@ -151,8 +102,11 @@
             <q-btn
               class="q-px-xs q-mr-xs"
               padding="sm"
-              @click="dateProblemCreate = svgMarkerStore.inputTodaysDate()"
-            >i dag</q-btn>
+              @click="
+                selectedProbFB.createdAt = svgMarkerStore.inputTodaysDate()
+              "
+              >i dag</q-btn
+            >
           </div>
 
           <!-- <q-btn @click="dateProblemCreate = inputTodaysDate()">i dag</q-btn> -->
@@ -165,11 +119,7 @@
             @click="deleteCurrentProblem"
           />
 
-          <q-btn
-            class="q-mb-none q-mt-md"
-            color="black"
-            label="avbryt"
-          />
+          <q-btn class="q-mb-none q-mt-md" color="black" label="avbryt" />
 
           <q-btn
             class="q-mb-none q-mt-md"
@@ -185,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 import SvgCanvas from "@/components/SvgComponents/SvgCanvas.vue";
 import UiProblemCard from "./UiProblemCard.vue";
@@ -194,13 +144,13 @@ import SvgIconZoomIn from "@/components/SvgComponents/SvgIconZoomIn.vue";
 import SvgIconZoomOut from "@/components/SvgComponents/SvgIconZoomOut.vue";
 import UiMarkerEditor from "./UiMarkerEditor.vue";
 import UiGradeSlider from "./UiGradeSlider.vue";
-// import UiProblemPrevNext from './UiProblemPrevNext.vue'
+import UiProblemPrevNext from "./UiProblemPrevNext.vue";
 const svgMarkerStore = useSvgMarkerStore();
-const dateProblemCreate = ref("01/02/2023");
+// const dateProblemCreate = ref("01/02/2023");
 
 const dateRule = (val: string) => {
   const pattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-  return pattern.test(val) || 'Date format must be DD/MM/YYYY';
+  return pattern.test(val) || "Date format must be DD/MM/YYYY";
 };
 
 const zoomInOut = () => {
@@ -222,9 +172,8 @@ const deleteCurrentProblem = function () {
 };
 
 const saveBackToFirebase = () => {
-  svgMarkerStore.saveInfoBackToFirebase();
+  svgMarkerStore.saveProblemBackToFirebase();
 };
-
 </script>
 
 <style scoped>

@@ -27,6 +27,9 @@
             <q-tab name="tab4" class="q-px-xs text-black">
               <SvgIconClimber />
             </q-tab>
+            <!-- <q-tab name="tab5" class="q-px-xs text-black">
+              <SvgIconWall />
+            </q-tab> -->
           </q-tabs>
         </q-toolbar>
       </q-header>

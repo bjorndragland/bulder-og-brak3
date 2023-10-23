@@ -1,9 +1,9 @@
 <template>
   <!-- flat -->
   <!-- bordered -->
-  <q-card flat class="my-card q-my-md">
+  <q-card flat :class="currentClass" bordered>
     <div class="row">
-      <SvgThumbnail />
+      <SvgThumbnail :problemId="props.problemId" />
 
       <div class="q-ml-md">
         <div class="row">
@@ -27,11 +27,23 @@
 </template>
 
 <script setup lang="ts">
-// import { computed } from 'vue';
+import { computed } from "vue";
 import UiGradeBadge from "./UiGradeBadge.vue";
 import SvgThumbnail from "../SvgComponents/SvgThumbnail.vue";
 
+const currentClass = computed(() => {
+  if (props.currentProblem == props.problemId) {
+    return "my-card q-my-md bg-blue-grey-1";
+  } else {
+    return "my-card q-my-md";
+  }
+});
+
 const props = defineProps({
+  problemId: {
+    required: true,
+    type: String,
+  },
   problemName: {
     required: true,
     type: String,
@@ -55,6 +67,11 @@ const props = defineProps({
   },
   problemDescription: {
     required: false,
+    type: String,
+    default: "",
+  },
+  currentProblem: {
+    required: true,
     type: String,
     default: "",
   },

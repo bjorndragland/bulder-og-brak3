@@ -2,10 +2,21 @@
   <!-- flat -->
   <!-- bordered -->
   <q-card flat class="my-card q-my-md" bordered>
-    <q-card-section>
-      {{ props.setName }}
-      {{ props.setActive }}
-    </q-card-section>
+    <div class="row">
+      <q-img
+        :src="$props.setImage"
+        style="height: 120px; max-width: 130px"
+      ></q-img>
+      <div class="q-ml-md">
+        <div class="text-subtitle2 text-weight-bold q-pt-xs">
+          {{ props.setCreatedAt }} - {{ props.setEndedAt }}
+        </div>
+
+        {{ props.setName }}
+        {{ props.setActive }}
+        <br />
+      </div>
+    </div>
   </q-card>
 </template>
 
@@ -17,9 +28,21 @@ const props = defineProps({
     required: true,
     type: String,
   },
+  setImage: {
+    required: true,
+    type: String,
+  },
   setActive: {
     required: true,
     type: Boolean,
+  },
+  setCreatedAt: {
+    required: true,
+    type: String,
+  },
+  setEndedAt: {
+    required: true,
+    type: String,
   },
 });
 </script>
