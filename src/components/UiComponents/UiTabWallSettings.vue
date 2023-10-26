@@ -70,9 +70,11 @@ const firebaseSets = computed(() => {
 const showSetDialog = (key: string) => {
   console.log(key);
   svgMarkerStore.showSet = key;
+  svgMarkerStore.addSetDialog = true;
 };
 
 const addSet = function () {
+  svgMarkerStore.createNewSet();
   svgMarkerStore.addSetDialog = true;
 };
 </script>

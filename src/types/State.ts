@@ -6,10 +6,12 @@ interface Problem {
   grade: string;
   gradeNum: number;
   createdAt: string;
+  createdAtNum: number;
   setter: string;
   image: string;
   set: string;
   updatedAt: string;
+  updatedAtNum: number;
   userId: string;
   problemHolds: ProblemHolds;
 }
@@ -38,9 +40,7 @@ interface ProblemHolds {
 }
 
 export default interface State {
-  lastSize: string;
   lastSizeNum: number;
-  lastType: string;
   lastTypeNum: number;
   appState: string;
   selectedHoldFBId: string;

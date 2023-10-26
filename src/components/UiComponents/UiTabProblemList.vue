@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="non-scrollable">
-      <UiProblemCardAddButton @clicked="addProblem" />
+      <UiProblemCardAddButton @clicked="svgMarkerStore.createNewProblem()" />
       <div class="row">
         <q-select
           class="col-10"
@@ -16,6 +16,8 @@
       </div>
     </div>
     <div class="scrollable-list">
+      <!-- v-for="(value, key) in firebaseProblems" -->
+      <!-- v-for="(value, key) in sortedProblems" -->
       <UiProblemCard
         v-for="(value, key) in firebaseProblems"
         :key="key"
@@ -58,13 +60,13 @@ const pickProblem = (key: string) => {
   )[0];
 };
 
+// const sortedProblems = computed(() => {
+//   return Object.values(svgMarkerStore.problemsFB).sort((a, b) => b.gradeNum - a.gradeNum);
+// });
+
 // const readHoldsFromFirebase = async () => {
 //   svgMarkerStore.fetchProblemHoldsFromObject();
 // };
-
-const addProblem = function () {
-  svgMarkerStore.createNewProblem();
-};
 </script>
 
 <style scoped>

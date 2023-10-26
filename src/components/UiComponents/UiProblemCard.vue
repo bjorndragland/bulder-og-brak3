@@ -1,18 +1,18 @@
 <template>
   <!-- flat -->
   <!-- bordered -->
-  <q-card flat :class="currentClass" bordered>
+  <q-card flat :class="currentClass">
     <div class="row">
       <SvgThumbnail :problemId="props.problemId" />
 
-      <div class="q-ml-md">
+      <div class="q-ml-sm">
         <div class="row">
           <UiGradeBadge
             :problemGrade="props.problemGrade"
             :problemGradeNum="props.problemGradeNum"
           />
-          <div class="text-subtitle2 text-weight-bold q-ml-md">
-            {{ props.problemName }}
+          <div class="text-subtitle2 text-weight-bold q-ml-sm">
+            {{ truncatedText }}
           </div>
         </div>
         <div class="text-caption q-mt-xs">
@@ -36,6 +36,15 @@ const currentClass = computed(() => {
     return "my-card q-my-md bg-blue-grey-1";
   } else {
     return "my-card q-my-md";
+  }
+});
+
+const truncatedText = computed(() => {
+  if (props.problemName.length > 26) {
+    const truncString = `${props.problemName.slice(0, 24)}..`;
+    return truncString;
+  } else {
+    return props.problemName;
   }
 });
 

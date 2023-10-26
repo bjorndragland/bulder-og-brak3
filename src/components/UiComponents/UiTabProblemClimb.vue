@@ -13,13 +13,13 @@
     <div class="fitIt">
       <SvgCanvas class="q-mt-xs" />
     </div>
-    <div
+    <!-- <div
       v-if="svgMarkerStore.appState == 'edit'"
       class="bg-grey-9 text-white instruction-text"
     >
       <q-icon name="info" class="q-ml-sm" />
       Klikk på bildet for å legge til, eller dra for å flytte på markør
-    </div>
+    </div> -->
   </div>
   <q-tab-panels v-model="svgMarkerStore.appState" animated>
     <q-tab-panel name="info" class="q-px-none q-py-xs">
@@ -69,7 +69,7 @@
               dense
               outlined
               hide-bottom-space
-              v-model="selectedProbFB.createdAt"
+              v-model="createDate"
               :rules="[dateRule]"
               mask="##/##/####"
             >
@@ -82,7 +82,7 @@
                   >
                     <!-- v-model="dateProblemCreate" -->
                     <q-date
-                      v-model="selectedProbFB.createdAt"
+                      v-model="createDate"
                       color="light-blue-9"
                       mask="DD/MM/YYYY"
                     >
@@ -100,10 +100,12 @@
               </template>
             </q-input>
             <q-btn
+              disabled
               class="q-px-xs q-mr-xs"
               padding="sm"
               @click="
-                selectedProbFB.createdAt = svgMarkerStore.inputTodaysDate()
+                selectedProbFB.createdAt =
+                  svgMarkerStore.inputTodaysDate().dateString
               "
               >i dag</q-btn
             >
@@ -126,7 +128,7 @@
             color="green"
             label="lagre"
             icon="done"
-            @click="saveBackToFirebase"
+            @click="saveProblemBackToFirebase"
           />
         </q-card-section>
       </q-card>
@@ -153,6 +155,24 @@ const dateRule = (val: string) => {
   return pattern.test(val) || "Date format must be DD/MM/YYYY";
 };
 
+const createDate = computed({
+  get() {
+    const date = new Date(
+      svgMarkerStore.problemsFB[svgMarkerStore.currentProblem].createdAtNum,
+    );
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = date.getUTCDate().toString().padStart(2, "0");
+    return `${day}/${month}/${year}`;
+  },
+  set(value) {
+    const [day, month, year] = value.split("/").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    svgMarkerStore.problemsFB[svgMarkerStore.currentProblem].createdAtNum =
+      date.getTime();
+  },
+});
+
 const zoomInOut = () => {
   if (svgMarkerStore.zoomFactor == 100) {
     svgMarkerStore.zoomFactor = 160;
@@ -171,7 +191,7 @@ const deleteCurrentProblem = function () {
   svgMarkerStore.deleteCurrentProblemFromLocal();
 };
 
-const saveBackToFirebase = () => {
+const saveProblemBackToFirebase = () => {
   svgMarkerStore.saveProblemBackToFirebase();
 };
 </script>

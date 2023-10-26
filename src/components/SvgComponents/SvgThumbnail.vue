@@ -8,7 +8,7 @@
           color-interpolation-filters="sRGB"
         >
           <!-- saturation -->
-          <feColorMatrix type="saturate" values="0" />
+          <feColorMatrix type="saturate" values="0.4" />
         </filter>
       </defs>
 
@@ -71,7 +71,7 @@ const props = defineProps({
 
 <style scoped>
 .down-scaled {
-  width: 64px;
+  width: 80px;
 }
 
 svg {

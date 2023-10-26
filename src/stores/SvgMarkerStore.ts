@@ -15,9 +15,7 @@ import {
 
 export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
   state: (): State => ({
-    lastSize: "S",
     lastSizeNum: 1,
-    lastType: "middle",
     lastTypeNum: 1,
     selectedHoldFBId: "0",
     appState: "info",
@@ -38,11 +36,11 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     newSetImageUrl: "null",
     setImageUrls: {},
     tab: "tab2",
-    addSetDialog: true,
+    addSetDialog: false,
   }),
   getters: {
     getHoldSizeOfSelected: (state: State) => {
-      if (state.problemsFB[state.currentProblem].problemHolds) {
+      if (Object.keys(state.problemsFB).length > 0) {
         return state.problemsFB[state.currentProblem].problemHolds[
           state.selectedHoldFBId
         ].sizeNum;
@@ -52,7 +50,7 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     },
 
     getHoldTypeOfSelected: (state: State) => {
-      if (state.problemsFB[state.currentProblem].problemHolds) {
+      if (Object.keys(state.problemsFB).length > 0) {
         return state.problemsFB[state.currentProblem].problemHolds[
           state.selectedHoldFBId
         ].typeNum;
@@ -85,7 +83,6 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     },
 
     async fetchSetsFromFB() {
-      console.log("hello y");
       const setsRef = dbRef(db, "sets");
       const snapshot = await get(setsRef);
       if (snapshot.exists()) {
@@ -100,7 +97,6 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       for (const item of keysOfSets) {
         const tempUrl = this.setsFB[item].image;
         const imageRef = storageRef(storage, tempUrl);
-        console.log(tempUrl);
         try {
           const url = await getDownloadURL(imageRef);
           this.setImageUrls[item] = url;
@@ -165,11 +161,13 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         description: "",
         grade: "5",
         gradeNum: 4,
-        createdAt: this.inputTodaysDate(),
+        createdAt: this.inputTodaysDate().dateString,
+        createdAtNum: this.inputTodaysDate().dateNum,
         setter: "Bjørn",
         image: "",
         set: "334",
-        updatedAt: this.inputTodaysDate(),
+        updatedAt: this.inputTodaysDate().dateString,
+        updatedAtNum: this.inputTodaysDate().dateNum,
         userId: userIdFB,
         problemHolds: {} as Record<string, HoldMarkerFB>,
       };
@@ -202,8 +200,42 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       this.tab = "tab3";
     },
 
+    createNewSet: function () {
+      const auth = getAuth();
+      let userIdFB: string;
+
+      if (auth.currentUser) {
+        userIdFB = auth.currentUser.uid;
+      } else {
+        userIdFB = "tom";
+      }
+
+      const newSetObject = {
+        active: false,
+        createdAt: this.inputTodaysDate().dateString,
+        createdAtNum: this.inputTodaysDate().dateNum,
+        description: "ny",
+        endedAt: "01/01/2025",
+        endedAtNum: 1698858101972,
+        image: "",
+        imageSize: {
+          height: "",
+          width: "",
+        },
+        name: "ny",
+        updatedAt: this.inputTodaysDate().dateString,
+        updatedAtNum: this.inputTodaysDate().dateNum,
+        userId: userIdFB,
+      };
+
+      const idSetRandom = Math.round(Math.random() * 1000000).toString();
+      this.setsFB[idSetRandom] = newSetObject;
+      this.showSet = idSetRandom;
+    },
+
     inputTodaysDate: function () {
       const curDate = new Date();
+      const curDateNow = Date.now();
       const inputYear = curDate.getFullYear();
       const inputMonth = curDate.getMonth() + 1;
       let inputMonthString;
@@ -220,7 +252,8 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         inputDayString = inputDay.toString();
       }
       const fullInputDate = `${inputDayString}/${inputMonthString}/${inputYear}`;
-      return fullInputDate;
+      // return fullInputDate;
+      return { dateString: fullInputDate, dateNum: curDateNow };
     },
 
     moveMarkerFBX: function (id: string, valueX: number) {
@@ -273,12 +306,21 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     },
 
     deleteSelectedHold: function () {
-      delete this.problemsFB[this.currentProblem].problemHolds[
-        this.selectedHoldFBId
-      ];
+      const holdToDelete: string = this.selectedHoldFBId;
+      const arrOfHolds = Object.keys(
+        this.problemsFB[this.currentProblem].problemHolds,
+      );
+      for (const holdId of arrOfHolds) {
+        if (holdId !== holdToDelete) {
+          // set another hold as selected
+          this.selectedHoldFBId = holdId;
+          break;
+        }
+      }
+      // do not allow to delete ALL holds, leave 1
+      if (arrOfHolds.length > 2) {
+        delete this.problemsFB[this.currentProblem].problemHolds[holdToDelete];
+      }
     },
-
-    // sortProblems: function (sorting: string) {
-    // }
   },
 });

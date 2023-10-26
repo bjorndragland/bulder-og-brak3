@@ -2,7 +2,7 @@
   <q-card flat class="my-card bg-grey-3">
     <!-- <p class="text-caption q-px-sm q-pt-xs q-mb-none ">Markører</p> -->
     <q-card-section>
-      <div class="q-mt-none q-mb-md flex">
+      <div class="q-mt-none q-mb-sm flex">
         <div>
           <q-btn
             class="q-px-xs q-mr-xs bg-white"
@@ -29,7 +29,7 @@
 
         <q-btn
           class="q-px-sm q-mx-xs"
-          color="red"
+          color="grey-9"
           icon="delete_outline"
           @click="deleteSelected"
         />
@@ -72,7 +72,7 @@
 
       <q-slider
         v-model="sizeOfHolds"
-        class="q-my-md q-px-sm"
+        class="q-my-sm q-px-sm"
         color="black"
         markers
         :marker-labels="objMarkerLabel"

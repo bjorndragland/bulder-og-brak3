@@ -94,17 +94,16 @@ const newMarker = function (e: MouseEvent) {
     let svgP: SVGPoint = pt.matrixTransform(
       svgRect.parentElement.getScreenCTM().inverse(),
     );
-    // let randomId = Math.floor(Math.random() * 10000000).toString();
     let randomNumberId = Math.floor(Math.random() * 10000000).toString();
     let newHoldMarkerFB: HoldMarkerFB = {
       posX: Math.round(svgP.x),
       posY: Math.round(svgP.y),
-      // size: svgMarkerStore.lastSize,
       sizeNum: svgMarkerStore.lastSizeNum,
-      // type: svgMarkerStore.lastType as HoldTypeTerm,
       typeNum: svgMarkerStore.lastTypeNum,
     };
-    svgMarkerStore.problemHoldsFB[randomNumberId] = newHoldMarkerFB;
+    svgMarkerStore.problemsFB[svgMarkerStore.currentProblem].problemHolds[
+      randomNumberId
+    ] = newHoldMarkerFB;
     svgMarkerStore.selectedHoldFBId = randomNumberId;
   }
 };

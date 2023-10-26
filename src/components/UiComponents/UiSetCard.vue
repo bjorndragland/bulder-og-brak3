@@ -5,7 +5,7 @@
     <div class="row">
       <q-img
         :src="$props.setImage"
-        style="height: 120px; max-width: 130px"
+        style="height: 110px; max-width: 120px"
       ></q-img>
       <div class="q-ml-md">
         <div class="text-subtitle2 text-weight-bold q-pt-xs">
