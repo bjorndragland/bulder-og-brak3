@@ -1,3 +1,8 @@
+interface imageSize {
+  width: number;
+  height: number;
+}
+
 interface WallSet {
   active: boolean;
   createdAt: string;
@@ -6,7 +11,7 @@ interface WallSet {
   endedAt: string;
   endedAtNum: number;
   image: string;
-  imageSize: object;
+  imageSize: imageSize;
   name: string;
   updatedAt: string;
   updatedAtNum: number;

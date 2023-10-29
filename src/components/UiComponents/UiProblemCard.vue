@@ -19,7 +19,7 @@
           {{ props.problemDate }}
         </div>
         <div class="text-caption">
-          {{ props.problemCreator }}
+          {{ props.problemCreator }} {{ props.problemSet }}
         </div>
       </div>
     </div>
@@ -88,6 +88,11 @@ const props = defineProps({
     required: true,
     type: Boolean,
     default: false,
+  },
+  problemSet: {
+    required: true,
+    type: String,
+    default: "",
   },
 });
 </script>

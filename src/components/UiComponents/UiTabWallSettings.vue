@@ -12,13 +12,14 @@
           behavior="menu"
           color="black"
         />
-        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
+        <q-btn disable class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
       <UiSetCard
         v-for="(value, key) in firebaseSets"
         :key="key"
+        :setKey="key.toString()"
         :setImage="svgMarkerStore.setImageUrls[key]"
         :setName="value.name"
         :setActive="value.active"

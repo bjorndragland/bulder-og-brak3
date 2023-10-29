@@ -230,6 +230,7 @@ const selectedSetFB = computed(() => {
 });
 
 const deleteCurrentSet = () => {
+  svgMarkerStore.deleteSelectedSetfromFB();
   console.log("deletos");
 };
 
@@ -237,10 +238,25 @@ const uploadImage = async () => {
   if (!file.value) return;
   const storage = getStorage();
   const imageRef = storageRefFB(storage, "images/" + file.value.name);
+
   try {
     uploadBytesResumable(imageRef, file.value).then(async () => {
       imageUrl.value = await getDownloadURL(imageRef);
-      console.log(imageUrl);
+      const imageTemp = new Image();
+      imageTemp.onload = () => {
+        svgMarkerStore.setsFB[svgMarkerStore.showSet].imageSize.width =
+          imageTemp.width;
+        svgMarkerStore.setsFB[svgMarkerStore.showSet].imageSize.height =
+          imageTemp.height;
+        if (file.value && imageUrl.value) {
+          svgMarkerStore.setsFB[svgMarkerStore.showSet].image =
+            "images/" + file.value.name;
+          svgMarkerStore.setImageUrls[svgMarkerStore.showSet] =
+            imageUrl.value.toString();
+        }
+      };
+      imageTemp.src = imageUrl.value;
+      // console.log(imageUrl);
     });
   } catch {
     console.log("feilet!");
@@ -248,7 +264,7 @@ const uploadImage = async () => {
 };
 
 const saveSetBackToFirebase = () => {
-  console.log("saveos");
+  svgMarkerStore.saveSetBackToFirebase();
 };
 </script>
 

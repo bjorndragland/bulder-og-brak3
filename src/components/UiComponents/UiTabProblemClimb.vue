@@ -24,13 +24,14 @@
   <q-tab-panels v-model="svgMarkerStore.appState" animated>
     <q-tab-panel name="info" class="q-px-none q-py-xs">
       <UiProblemCard
-        :problemId="svgMarkerStore.currentProblem"
+        :problemId="selectedProbFB.problemId"
         :problemName="selectedProbFB.name"
         :problemGrade="selectedProbFB.grade"
         :problemGradeNum="selectedProbFB.gradeNum"
         :problemDate="selectedProbFB.createdAt"
         :problemDescription="selectedProbFB.description"
         :problemCreator="selectedProbFB.setter"
+        :problemSet="selectedProbFB.set"
         :showDetails="true"
         :currentProblem="svgMarkerStore.currentProblem"
       />
@@ -112,6 +113,14 @@
           </div>
 
           <!-- <q-btn @click="dateProblemCreate = inputTodaysDate()">i dag</q-btn> -->
+
+          <q-btn
+            class="q-mb-none q-mt-md"
+            color="blue"
+            label="Kopier til nyeste sett"
+            @click="deleteCurrentProblem"
+          />
+
 
           <q-btn
             class="q-mb-none q-mt-md"

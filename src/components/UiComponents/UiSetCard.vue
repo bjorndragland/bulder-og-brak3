@@ -14,6 +14,7 @@
 
         {{ props.setName }}
         {{ props.setActive }}
+        {{ $props.setKey }}
         <br />
       </div>
     </div>
@@ -24,6 +25,10 @@
 // import { computed } from 'vue';
 
 const props = defineProps({
+  setKey: {
+    required: true,
+    type: String,
+  },
   setName: {
     required: true,
     type: String,

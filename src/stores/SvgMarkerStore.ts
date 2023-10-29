@@ -11,10 +11,13 @@ import {
   getStorage,
   ref as storageRef,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 
 export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
   state: (): State => ({
+    preferredSortFromFB:"Nyeste først",
+    currentSetFromFB: "222222",
     lastSizeNum: 1,
     lastTypeNum: 1,
     selectedHoldFBId: "0",
@@ -25,7 +28,6 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     problemsFB: {},
     problemsLocal: {},
     problemSortOrder: [],
-    problemHoldsFB: {},
     setsFB: {},
     newProblem: {},
     wallWidth: 3.1,
@@ -82,6 +84,15 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       }
     },
 
+async fetchAppSettingsFromFB(){
+  const appSettRef = dbRef(db, "appSettings");
+  const snapshot = await get(appSettRef);
+  if (snapshot.exists()) {
+    this.setsFB = snapshot.val();
+  }
+},
+
+
     async fetchSetsFromFB() {
       const setsRef = dbRef(db, "sets");
       const snapshot = await get(setsRef);
@@ -107,6 +118,9 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
     },
 
     async saveSetBackToFirebase() {
+      const idToRef = this.showSet;
+      const objSetToSave = this.setsFB[this.showSet];
+      set(dbRef(db, "sets/" + idToRef), objSetToSave);
       console.log("loggins");
     },
 
@@ -147,6 +161,26 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       delete this.problemsFB[idToRef];
     },
 
+    deleteSelectedSetfromFB: function () {
+      const storage = getStorage();
+      this.setsFB[this.showSet].image;
+      const fileRef = storageRef(storage, this.setsFB[this.showSet].image);
+
+      // Delete the file
+      deleteObject(fileRef)
+        .then(() => {
+          // File deleted successfully
+        })
+        .catch((error) => {
+          // Uh-oh, an error occurred!
+        });
+
+      const idToRef = this.showSet;
+      set(dbRef(db, "sets/" + idToRef), null);
+      delete this.setsFB[idToRef];
+      delete this.setImageUrls[idToRef];
+    },
+
     createNewProblem: function () {
       const auth = getAuth();
       let userIdFB: string;
@@ -156,7 +190,9 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       } else {
         userIdFB = "tom";
       }
+      const idRandom = Math.round(Math.random() * 1000000000).toString();
       const newProbObject = {
+        problemId: idRandom,
         name: "ny bulder",
         description: "",
         grade: "5",
@@ -165,7 +201,7 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         createdAtNum: this.inputTodaysDate().dateNum,
         setter: "Bjørn",
         image: "",
-        set: "334",
+        set: this.currentSet,
         updatedAt: this.inputTodaysDate().dateString,
         updatedAtNum: this.inputTodaysDate().dateNum,
         userId: userIdFB,
@@ -190,8 +226,7 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         this.selectedHoldFBId = randomId;
       }
 
-      const idRandom = Math.round(Math.random() * 1000000000).toString();
-      console.log(idRandom);
+      // console.log(idRandom);
 
       this.problemsFB[idRandom] = newProbObject;
       this.currentProblem = idRandom;
@@ -219,8 +254,8 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
         endedAtNum: 1698858101972,
         image: "",
         imageSize: {
-          height: "",
-          width: "",
+          height: 0,
+          width: 0,
         },
         name: "ny",
         updatedAt: this.inputTodaysDate().dateString,

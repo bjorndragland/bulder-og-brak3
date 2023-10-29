@@ -1,20 +1,22 @@
 import type WallSets from "./WallSets";
+import type Problem from "./Problem";
 
-interface Problem {
-  name: string;
-  description: string;
-  grade: string;
-  gradeNum: number;
-  createdAt: string;
-  createdAtNum: number;
-  setter: string;
-  image: string;
-  set: string;
-  updatedAt: string;
-  updatedAtNum: number;
-  userId: string;
-  problemHolds: ProblemHolds;
-}
+// interface Problem {
+//   problemId: string;
+//   name: string;
+//   description: string;
+//   grade: string;
+//   gradeNum: number;
+//   createdAt: string;
+//   createdAtNum: number;
+//   setter: string;
+//   image: string;
+//   set: string;
+//   updatedAt: string;
+//   updatedAtNum: number;
+//   userId: string;
+//   problemHolds: ProblemHolds;
+// }
 
 interface Problems {
   [key: string]: Problem;
@@ -40,6 +42,8 @@ interface ProblemHolds {
 }
 
 export default interface State {
+  preferredSortFromFB: string;
+  currentSetFromFB: string;
   lastSizeNum: number;
   lastTypeNum: number;
   appState: string;
@@ -47,7 +51,6 @@ export default interface State {
   problemsLocal: Problems;
   problemsFB: Problems;
   newProblem: Problems;
-  problemHoldsFB: ProblemHolds;
   setsFB: WallSets;
   problemSortOrder: ProblemSortOrder[];
   currentSet: string;
