@@ -12,20 +12,27 @@
           behavior="menu"
           color="black"
         />
-        <q-btn class="q-ml-md" padding="xs" icon="filter_alt" />
+        <q-btn disable class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
       <UiSetCard
         v-for="(value, key) in firebaseSets"
         :key="key"
+        :setKey="key.toString()"
+        :setImage="svgMarkerStore.setImageUrls[key]"
         :setName="value.name"
         :setActive="value.active"
+        :setCreatedAt="value.createdAt"
+        :setEndedAt="value.endedAt"
+        @click="showSetDialog(key.toString())"
       />
+
+      <q-btn @click="enterOldSet">klikko</q-btn>
     </div>
   </div>
 
-  <UiSetAddDialog />
+  <UiSetDialog />
 
   <!-- <q-input
     v-model="svgMarkerStore.wallWidth"
@@ -44,7 +51,7 @@
 import { ref, computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 import UiSetCard from "./UiSetCard.vue";
-import UiSetAddDialog from "./UiSetAddDialog.vue";
+import UiSetDialog from "./UiSetDialog.vue";
 
 import UiSetCardAddButton from "./UiSetCardAddButton.vue";
 
@@ -53,11 +60,22 @@ const svgMarkerStore = useSvgMarkerStore();
 const model = ref("Nyeste først");
 const options = ["Nyeste først", "Grad stigende", "Grad synkende"];
 
+const enterOldSet = function () {
+  svgMarkerStore.currentSet = "111111";
+};
+
 const firebaseSets = computed(() => {
   return svgMarkerStore.setsFB;
 });
 
+const showSetDialog = (key: string) => {
+  console.log(key);
+  svgMarkerStore.showSet = key;
+  svgMarkerStore.addSetDialog = true;
+};
+
 const addSet = function () {
+  svgMarkerStore.createNewSet();
   svgMarkerStore.addSetDialog = true;
 };
 </script>

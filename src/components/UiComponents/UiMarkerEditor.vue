@@ -1,9 +1,8 @@
 <template>
   <q-card flat class="my-card bg-grey-3">
-    <!-- <p class="text-caption q-px-xs q-my-xs q-pt-xs q-mb-none ">Takmarkør</p> -->
-    <!-- <p class="text-caption q-px-sm q-my-xs q-pt-xs q-mb-none ">Finjustering</p> -->
+    <!-- <p class="text-caption q-px-sm q-pt-xs q-mb-none ">Markører</p> -->
     <q-card-section>
-      <div class="q-mt-none q-mb-md flex">
+      <div class="q-mt-none q-mb-sm flex">
         <div>
           <q-btn
             class="q-px-xs q-mr-xs bg-white"
@@ -15,7 +14,6 @@
             icon="south"
             @click="svgMarkerStore.nudgeMarkerYminusFB()"
           />
-          <!-- icon="arrow_drop_up" -->
           <q-btn
             class="q-px-xs q-mx-xs bg-white"
             icon="north"
@@ -28,22 +26,14 @@
           />
         </div>
         <q-space />
-        <!-- <q-btn
-          color="red"
-          no-caps
-          label="Slett markør"
-          @click="deleteSelected"
-        /> -->
 
         <q-btn
           class="q-px-sm q-mx-xs"
-          color="red"
+          color="grey-9"
           icon="delete_outline"
           @click="deleteSelected"
         />
       </div>
-      <!-- v-model="sizeOfHolds" -->
-      <!-- v-model="sizeModel" -->
 
       <q-btn-toggle
         class="q-my-md"
@@ -82,7 +72,7 @@
 
       <q-slider
         v-model="sizeOfHolds"
-        class="q-my-md q-px-sm"
+        class="q-my-sm q-px-sm"
         color="black"
         markers
         :marker-labels="objMarkerLabel"
@@ -99,8 +89,6 @@ import { computed } from "vue";
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 const svgMarkerStore = useSvgMarkerStore();
 
-// const model2 = ref(0);
-// const sizeModel = ref(0);
 const objMarkerLabel = { 0: "XS", 1: "S", 2: "M", 3: "L", 4: "XL" };
 
 const deleteSelected = () => {
@@ -124,21 +112,6 @@ const typeOfHolds = computed({
     svgMarkerStore.setHoldTypeOfSelected(value);
   },
 });
-
-// const colors = [
-//   { color: "light-green-6", label: "start", holdType: "start" },
-//   { color: "light-blue-7", label: "midt", holdType: "middle" },
-//   { color: "purple-5", label: "topp", holdType: "end" },
-//   { color: "orange-7", label: "fot", holdType: "foot" },
-// ];
-
-// const selectSize = () => {
-//   svgMarkerStore.changeHoldSizeOfSelected(sizeModel.value);
-// };
-
-// const selectColor = (holdType: string) => {
-//   svgMarkerStore.changeHoldTypeOfSelected(holdType);
-// };
 </script>
 
 <style scoped>

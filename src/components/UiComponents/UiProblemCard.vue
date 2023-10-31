@@ -1,25 +1,25 @@
 <template>
   <!-- flat -->
   <!-- bordered -->
-  <q-card flat class="my-card q-my-md">
+  <q-card flat :class="currentClass">
     <div class="row">
-      <SvgThumbnail />
+      <SvgThumbnail :problemId="props.problemId" />
 
-      <div class="q-ml-md">
+      <div class="q-ml-sm">
         <div class="row">
           <UiGradeBadge
             :problemGrade="props.problemGrade"
             :problemGradeNum="props.problemGradeNum"
           />
-          <div class="text-subtitle2 text-weight-bold q-ml-md">
-            {{ props.problemName }}
+          <div class="text-subtitle2 text-weight-bold q-ml-sm">
+            {{ truncatedText }}
           </div>
         </div>
         <div class="text-caption q-mt-xs">
           {{ props.problemDate }}
         </div>
         <div class="text-caption">
-          {{ props.problemCreator }}
+          {{ props.problemCreator }} {{ props.problemSet }}
         </div>
       </div>
     </div>
@@ -27,11 +27,32 @@
 </template>
 
 <script setup lang="ts">
-// import { computed } from 'vue';
+import { computed } from "vue";
 import UiGradeBadge from "./UiGradeBadge.vue";
 import SvgThumbnail from "../SvgComponents/SvgThumbnail.vue";
 
+const currentClass = computed(() => {
+  if (props.currentProblem == props.problemId) {
+    return "my-card q-my-md bg-blue-grey-1";
+  } else {
+    return "my-card q-my-md";
+  }
+});
+
+const truncatedText = computed(() => {
+  if (props.problemName.length > 26) {
+    const truncString = `${props.problemName.slice(0, 24)}..`;
+    return truncString;
+  } else {
+    return props.problemName;
+  }
+});
+
 const props = defineProps({
+  problemId: {
+    required: true,
+    type: String,
+  },
   problemName: {
     required: true,
     type: String,
@@ -58,10 +79,20 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  currentProblem: {
+    required: true,
+    type: String,
+    default: "",
+  },
   showDetails: {
     required: true,
     type: Boolean,
     default: false,
+  },
+  problemSet: {
+    required: true,
+    type: String,
+    default: "",
   },
 });
 </script>

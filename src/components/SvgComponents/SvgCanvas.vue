@@ -13,7 +13,6 @@
     @touchend="endDrag()"
     @mouseleave="endDrag()"
   >
-    <!-- fill="#43a047" -->
     <rect
       v-if="svgMarkerStore.appState == 'edit'"
       fill="#f44336"
@@ -43,17 +42,12 @@
       @mouseup="newMarker($event)"
     />
 
-    <g
-      v-for="(value, key) in objOfHoldsFB"
-      :key="key"
-    >
+    <g v-for="(value, key) in objOfHoldsFB" :key="key">
       <SvgHoldMarker
         :markerX="value.posX"
         :markerY="value.posY"
-        :markerSize="value.size"
         :markerSizeNum="value.sizeNum"
-        :markerId="Number(key)"
-        :markerType="value.type"
+        :markerId="key.toString()"
         :markerTypeNum="value.typeNum"
         :markerThumb="false"
       />
@@ -67,17 +61,15 @@
 // hjemmeveggen_3_red.jpg 1342 x 1503
 
 import { computed, ref } from "vue";
-// import myImage from '../../assets/hjemmeveggen_2_red.jpg';
-// import myImage from '../../assets/hjemmevegg1.jpg';
-// import myImage from '../../assets/redpoint_1_red.jpg';
 import { useSvgMarkerStore } from "../../stores/SvgMarkerStore";
 import SvgHoldMarker from "./SvgHoldMarker.vue";
 import type HoldMarkerFB from "../../types/HoldMarkerFB";
 
-import type { HoldTypeTerm } from "../../types/HoldTypeTerm.js";
+// import type { HoldTypeTerm } from "../../types/HoldTypeTerm.js";
 
 const svgMarkerStore = useSvgMarkerStore();
-const wallImage = svgMarkerStore.imageUrl;
+// const wallImage = svgMarkerStore.problemImageUrl;
+const wallImage = svgMarkerStore.setImageUrls[svgMarkerStore.currentSet];
 const offsetX = ref(0);
 const offsetY = ref(0);
 const dragging = ref(false);
@@ -102,17 +94,16 @@ const newMarker = function (e: MouseEvent) {
     let svgP: SVGPoint = pt.matrixTransform(
       svgRect.parentElement.getScreenCTM().inverse(),
     );
-    // let randomId = Math.floor(Math.random() * 10000000).toString();
-    let randomNumberId = Math.floor(Math.random() * 10000000);
+    let randomNumberId = Math.floor(Math.random() * 10000000).toString();
     let newHoldMarkerFB: HoldMarkerFB = {
       posX: Math.round(svgP.x),
       posY: Math.round(svgP.y),
-      size: svgMarkerStore.lastSize,
       sizeNum: svgMarkerStore.lastSizeNum,
-      type: svgMarkerStore.lastType as HoldTypeTerm,
       typeNum: svgMarkerStore.lastTypeNum,
     };
-    svgMarkerStore.problemHoldsFB[randomNumberId] = newHoldMarkerFB;
+    svgMarkerStore.problemsFB[svgMarkerStore.currentProblem].problemHolds[
+      randomNumberId
+    ] = newHoldMarkerFB;
     svgMarkerStore.selectedHoldFBId = randomNumberId;
   }
 };
@@ -130,7 +121,7 @@ const startDragM = function (e: MouseEvent) {
       offsetX.value = offset.x;
       offsetY.value = offset.y;
       dragging.value = true;
-      svgMarkerStore.selectedHoldFBId = Number(currentSel.value);
+      svgMarkerStore.selectedHoldFBId = currentSel.value;
     }
   }
 };
@@ -148,7 +139,7 @@ const startDragT = function (e: TouchEvent) {
       offsetX.value = offset.x;
       offsetY.value = offset.y;
       dragging.value = true;
-      svgMarkerStore.selectedHoldFBId = Number(currentSel.value);
+      svgMarkerStore.selectedHoldFBId = currentSel.value;
     }
   }
 };
@@ -162,8 +153,8 @@ const dragM = function (e: MouseEvent) {
       coord = getMousePosition(e, theSelectedOne);
       coordX.value = coord.x - offsetX.value;
       coordY.value = coord.y - offsetY.value;
-      svgMarkerStore.moveMarkerFBX(Number(currentSel.value), coordX.value);
-      svgMarkerStore.moveMarkerFBY(Number(currentSel.value), coordY.value);
+      svgMarkerStore.moveMarkerFBX(currentSel.value, coordX.value);
+      svgMarkerStore.moveMarkerFBY(currentSel.value, coordY.value);
     }
   }
 };
@@ -178,8 +169,8 @@ const dragT = function (e: TouchEvent) {
       coord = getTouchPosition(e, theSelectedOne)!;
       coordX.value = coord.x - offsetX.value;
       coordY.value = coord.y - offsetY.value;
-      svgMarkerStore.moveMarkerFBX(Number(currentSel.value), coordX.value);
-      svgMarkerStore.moveMarkerFBY(Number(currentSel.value), coordY.value);
+      svgMarkerStore.moveMarkerFBX(currentSel.value, coordX.value);
+      svgMarkerStore.moveMarkerFBY(currentSel.value, coordY.value);
     }
   }
 };
@@ -213,8 +204,9 @@ const getTouchPosition = (evt: TouchEvent, svg: SVGGraphicsElement) => {
 };
 
 const objOfHoldsFB = computed(() => {
-  if (svgMarkerStore.problemHoldsFB) {
-    return svgMarkerStore.problemHoldsFB;
+  if (svgMarkerStore.problemsFB[svgMarkerStore.currentProblem].problemHolds) {
+    return svgMarkerStore.problemsFB[svgMarkerStore.currentProblem]
+      .problemHolds;
   } else {
     return null;
   }
@@ -226,19 +218,19 @@ const objOfHoldsFB = computed(() => {
   cursor: pointer;
 }
 
-.svg-zoom1 {
+/* .svg-zoom1 {
   width: 100%;
   height: 100%;
   transition:
     width 0.3s,
     height 0.3s ease-in-out;
-}
+} */
 
-.svg-zoom2 {
+/* .svg-zoom2 {
   width: 160%;
   height: 160%;
   transition:
     width 0.3s,
     height 0.3s ease-in-out;
-}
+} */
 </style>

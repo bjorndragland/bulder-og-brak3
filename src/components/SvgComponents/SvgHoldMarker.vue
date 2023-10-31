@@ -1,7 +1,7 @@
 <template>
   <g :transform-origin="originString" :transform="scaleString">
     <circle
-      :id="props.markerId.toString()"
+      :id="props.markerId"
       class="draggableC"
       :cx="props.markerX"
       :cy="props.markerY"
@@ -14,21 +14,27 @@
     />
 
     <circle
-      :id="props.markerId.toString()"
+      :id="props.markerId"
       class="draggableC"
       :cx="props.markerX"
       :cy="props.markerY"
       :r="sizeToRadius - 1"
       fill="grey"
       fill-opacity="0"
-      stroke="white"
+      :stroke="borderColor"
       stroke-width="2px"
       stroke-opacity="1"
       pointer-events="visible"
       stroke-dasharray="4 2"
     />
 
-    <g v-if="holdIsSelected && svgMarkerStore.appState == 'edit'">
+    <g
+      v-if="
+        holdIsSelected &&
+        svgMarkerStore.appState == 'edit' &&
+        $props.markerThumb == false
+      "
+    >
       <!-- upper left tick -->
       <polyline
         :stroke="typeToColor"
@@ -37,9 +43,9 @@
         :points="`${markerX - sizeToRadius - 2},${markerY - sizeToRadius / 2} ${
           markerX - sizeToRadius - 2
         },
-                ${markerY - sizeToRadius - 2} ${markerX - sizeToRadius / 2}, ${
-                  markerY - sizeToRadius - 2
-                }`"
+          ${markerY - sizeToRadius - 2} ${markerX - sizeToRadius / 2}, ${
+            markerY - sizeToRadius - 2
+          }`"
       />
       <polyline
         stroke="white"
@@ -48,9 +54,9 @@
         :points="`${markerX - sizeToRadius - 1},${markerY - sizeToRadius / 2} ${
           markerX - sizeToRadius - 1
         },
-                ${markerY - sizeToRadius - 1} ${markerX - sizeToRadius / 2}, ${
-                  markerY - sizeToRadius - 1
-                }`"
+          ${markerY - sizeToRadius - 1} ${markerX - sizeToRadius / 2}, ${
+            markerY - sizeToRadius - 1
+          }`"
       />
 
       <!-- upper right tick -->
@@ -61,9 +67,9 @@
         :points="`${markerX + sizeToRadius + 2},${markerY - sizeToRadius / 2} ${
           markerX + sizeToRadius + 2
         },
-                ${markerY - sizeToRadius - 2} ${markerX + sizeToRadius / 2}, ${
-                  markerY - sizeToRadius - 2
-                }`"
+          ${markerY - sizeToRadius - 2} ${markerX + sizeToRadius / 2}, ${
+            markerY - sizeToRadius - 2
+          }`"
       />
       <polyline
         stroke="white"
@@ -72,9 +78,9 @@
         :points="`${markerX + sizeToRadius + 1},${markerY - sizeToRadius / 2} ${
           markerX + sizeToRadius + 1
         },
-                ${markerY - sizeToRadius - 1} ${markerX + sizeToRadius / 2}, ${
-                  markerY - sizeToRadius - 1
-                }`"
+          ${markerY - sizeToRadius - 1} ${markerX + sizeToRadius / 2}, ${
+            markerY - sizeToRadius - 1
+          }`"
       />
 
       <!-- lower left tick -->
@@ -85,9 +91,9 @@
         :points="`${markerX - sizeToRadius - 2},${markerY + sizeToRadius / 2} ${
           markerX - sizeToRadius - 2
         },
-                ${markerY + sizeToRadius + 2} ${markerX - sizeToRadius / 2}, ${
-                  markerY + sizeToRadius + 2
-                }`"
+          ${markerY + sizeToRadius + 2} ${markerX - sizeToRadius / 2}, ${
+            markerY + sizeToRadius + 2
+          }`"
       />
       <polyline
         stroke="white"
@@ -96,9 +102,9 @@
         :points="`${markerX - sizeToRadius - 1},${markerY + sizeToRadius / 2} ${
           markerX - sizeToRadius - 1
         },
-                ${markerY + sizeToRadius + 1} ${markerX - sizeToRadius / 2}, ${
-                  markerY + sizeToRadius + 1
-                }`"
+          ${markerY + sizeToRadius + 1} ${markerX - sizeToRadius / 2}, ${
+            markerY + sizeToRadius + 1
+          }`"
       />
 
       <!-- lower right tick -->
@@ -109,9 +115,9 @@
         :points="`${markerX + sizeToRadius + 2},${markerY + sizeToRadius / 2} ${
           markerX + sizeToRadius + 2
         },
-                ${markerY + sizeToRadius + 2} ${markerX + sizeToRadius / 2}, ${
-                  markerY + sizeToRadius + 2
-                }`"
+          ${markerY + sizeToRadius + 2} ${markerX + sizeToRadius / 2}, ${
+            markerY + sizeToRadius + 2
+          }`"
       />
       <polyline
         stroke="white"
@@ -120,9 +126,9 @@
         :points="`${markerX + sizeToRadius + 1},${markerY + sizeToRadius / 2} ${
           markerX + sizeToRadius + 1
         },
-                ${markerY + sizeToRadius + 1} ${markerX + sizeToRadius / 2}, ${
-                  markerY + sizeToRadius + 1
-                }`"
+          ${markerY + sizeToRadius + 1} ${markerX + sizeToRadius / 2}, ${
+            markerY + sizeToRadius + 1
+          }`"
       />
     </g>
   </g>
@@ -134,10 +140,6 @@ import { useSvgMarkerStore } from "@/stores/SvgMarkerStore";
 
 const svgMarkerStore = useSvgMarkerStore();
 
-// const radiusFactor = computed(() => {
-//   return 4
-// })
-
 const originString = computed(() => {
   return props.markerX + " " + props.markerY;
 });
@@ -145,11 +147,18 @@ const scaleString = computed(() => {
   let scaleComponent = svgMarkerStore.markerScale;
   return `scale(${scaleComponent} ${scaleComponent})`;
 });
+const borderColor = computed(() => {
+  if (props.markerThumb == false) {
+    return "white";
+  } else {
+    return "black";
+  }
+});
 
 const props = defineProps({
   markerId: {
     required: true,
-    type: Number,
+    type: String,
   },
   markerX: {
     required: true,
@@ -159,17 +168,9 @@ const props = defineProps({
     required: true,
     type: Number,
   },
-  markerSize: {
-    required: true,
-    type: String,
-  },
   markerSizeNum: {
     required: true,
     type: Number,
-  },
-  markerType: {
-    required: true,
-    type: String,
   },
   markerTypeNum: {
     required: true,
@@ -220,7 +221,6 @@ const typeToColor = computed(() => {
 });
 
 const holdIsSelected = computed(() => {
-  // debugger;
   if (props.markerId === svgMarkerStore.selectedHoldFBId) {
     return true;
   } else {
