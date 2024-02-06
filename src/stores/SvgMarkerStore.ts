@@ -16,7 +16,7 @@ import {
 
 export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
   state: (): State => ({
-    preferredSortFromFB:"Nyeste først",
+    preferredSortFromFB: "Nyeste først",
     currentSetFromFB: "222222",
     lastSizeNum: 1,
     lastTypeNum: 1,
@@ -84,14 +84,13 @@ export const useSvgMarkerStore = defineStore("SvgMarkerStore", {
       }
     },
 
-async fetchAppSettingsFromFB(){
-  const appSettRef = dbRef(db, "appSettings");
-  const snapshot = await get(appSettRef);
-  if (snapshot.exists()) {
-    this.setsFB = snapshot.val();
-  }
-},
-
+    async fetchAppSettingsFromFB() {
+      const appSettRef = dbRef(db, "appSettings");
+      const snapshot = await get(appSettRef);
+      if (snapshot.exists()) {
+        this.setsFB = snapshot.val();
+      }
+    },
 
     async fetchSetsFromFB() {
       const setsRef = dbRef(db, "sets");
@@ -171,7 +170,7 @@ async fetchAppSettingsFromFB(){
         .then(() => {
           // File deleted successfully
         })
-        .catch((error) => {
+        .catch(() => {
           // Uh-oh, an error occurred!
         });
 

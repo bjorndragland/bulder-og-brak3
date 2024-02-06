@@ -1,4 +1,3 @@
-
 interface ProblemHold {
   posX: number;
   posY: number;

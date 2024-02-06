@@ -121,7 +121,6 @@
             @click="deleteCurrentProblem"
           />
 
-
           <q-btn
             class="q-mb-none q-mt-md"
             color="red"

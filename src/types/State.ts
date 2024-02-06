@@ -30,16 +30,16 @@ interface setImageUrls {
   [key: string]: string;
 }
 
-interface ProblemHold {
-  posX: number;
-  posY: number;
-  sizeNum: number;
-  typeNum: number;
-}
+// interface ProblemHold {
+//   posX: number;
+//   posY: number;
+//   sizeNum: number;
+//   typeNum: number;
+// }
 
-interface ProblemHolds {
-  [key: string]: ProblemHold;
-}
+// interface ProblemHolds {
+//   [key: string]: ProblemHold;
+// }
 
 export default interface State {
   preferredSortFromFB: string;

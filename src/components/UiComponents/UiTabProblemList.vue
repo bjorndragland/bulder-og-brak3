@@ -12,34 +12,10 @@
           behavior="menu"
           color="black"
         />
-        <q-btn
-          disable
-          class="q-ml-md"
-          padding="xs"
-          icon="filter_alt"
-        />
+        <q-btn disable class="q-ml-md" padding="xs" icon="filter_alt" />
       </div>
     </div>
     <div class="scrollable-list">
-
-      <!-- <UiProblemCard
-        v-for="(value, key) in firebaseProblems"
-        :key="key"
-        :problemId="value.problemId"
-        :problemName="value.name"
-        :problemGrade="value.grade"
-        :problemGradeNum="value.gradeNum"
-        :problemDate="value.createdAt"
-        :problemDescription="value.description"
-        :problemCreator="value.setter"
-        :problemSet="value.set"
-        :showDetails="false"
-        :currentProblem="svgMarkerStore.currentProblem"
-        @click="pickProblem(key.toString())"
-      /> -->
-
-
-
       <UiProblemCard
         v-for="item in sortedProblems"
         :key="item.problemId"
@@ -55,8 +31,6 @@
         :currentProblem="svgMarkerStore.currentProblem"
         @click="pickProblem(item.problemId)"
       />
-
-
     </div>
   </div>
 </template>
@@ -75,7 +49,12 @@ const svgMarkerStore = useSvgMarkerStore();
 
 const model = ref("Nyeste først");
 
-const options = ["Nyeste først", "Eldste først", "Grad stigende", "Grad synkende"];
+const options = [
+  "Nyeste først",
+  "Eldste først",
+  "Grad stigende",
+  "Grad synkende",
+];
 
 const pickProblem = (key: string) => {
   svgMarkerStore.currentProblem = key;
@@ -93,18 +72,24 @@ const sortedProblems = computed(() => {
   console.log(filteredObjects);
   let sortArray: HoldMarkerFB[] = [];
   if (model.value === "Nyeste først") {
-    sortArray = Object.values(filteredObjects).sort((a, b) => b.createdAtNum - a.createdAtNum);
-  }else if(model.value === "Eldste først"){
-    sortArray = Object.values(filteredObjects).sort((b, a) => b.createdAtNum - a.createdAtNum);
-  }else if(model.value === "Grad stigende"){
-    sortArray = Object.values(filteredObjects).sort((b, a) => b.gradeNum - a.gradeNum);
-  }else if (model.value === "Grad synkende"){
-    sortArray = Object.values(filteredObjects).sort((a, b) => b.gradeNum - a.gradeNum);
+    sortArray = Object.values(filteredObjects).sort(
+      (a, b) => b.createdAtNum - a.createdAtNum,
+    );
+  } else if (model.value === "Eldste først") {
+    sortArray = Object.values(filteredObjects).sort(
+      (b, a) => b.createdAtNum - a.createdAtNum,
+    );
+  } else if (model.value === "Grad stigende") {
+    sortArray = Object.values(filteredObjects).sort(
+      (b, a) => b.gradeNum - a.gradeNum,
+    );
+  } else if (model.value === "Grad synkende") {
+    sortArray = Object.values(filteredObjects).sort(
+      (a, b) => b.gradeNum - a.gradeNum,
+    );
   }
 
-  return sortArray
-
-
+  return sortArray;
 });
 
 // const readHoldsFromFirebase = async () => {

@@ -33,9 +33,9 @@ import SvgThumbnail from "../SvgComponents/SvgThumbnail.vue";
 
 const currentClass = computed(() => {
   if (props.currentProblem == props.problemId) {
-    return "my-card q-my-md bg-blue-grey-1";
+    return "my-card q-mb-md q-mt-xs bg-blue-grey-1";
   } else {
-    return "my-card q-my-md";
+    return "my-card q-mb-md q-mt-xs";
   }
 });
 
